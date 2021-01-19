@@ -3,12 +3,20 @@ public class Card {
     private String rank;
     private String suit;
     private int rankId;
+    private String colour;
     
     
     // Constructor - upon creation, a rank and suit are assigned
     public Card(int rankId, String suit) {
         this.rankId = rankId;
         this.suit = suit;
+        
+        if (suit.equals("Spades") || suit.equals("Clubs")) {
+            colour = "Black";
+        }
+        else {
+            colour = "Red";
+        }
         
         switch (rankId) {
             case 1:
@@ -69,6 +77,10 @@ public class Card {
     
     public String getCard() {
         return rank + suit;
+    }
+    
+    public String getColour() {
+        return colour;
     }
     
 }
