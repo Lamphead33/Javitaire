@@ -4,13 +4,14 @@ public class Card {
     private String suit;
     private int rankId;
     private String colour;
+    private boolean faceDown;
     
     
     // Constructor - upon creation, a rank and suit are assigned
     public Card(int rankId, String suit) {
         this.rankId = rankId;
         this.suit = suit;
-        
+        this.faceDown = true;
         if (suit.equals("Spades") || suit.equals("Clubs")) {
             colour = "Black";
         }
@@ -76,11 +77,20 @@ public class Card {
     }
     
     public String getCard() {
-        return rank + suit;
+        return this.rank + this.suit;
     }
     
     public String getColour() {
-        return colour;
+        return this.colour;
     }
     
+    public boolean isFaceDown() {
+        return this.faceDown;
+    }
+    
+    
+    // Setters 
+    public void setFaceUp() {
+        this.faceDown = false;
+    }
 }
