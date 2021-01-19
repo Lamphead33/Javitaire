@@ -5,6 +5,8 @@ public class Card {
     private int rankId;
     private String colour;
     private boolean faceDown;
+    final static public int CARD_HEIGHT = 150;
+	final static public int CARD_WIDTH = 100;
     
     
     // Constructor - upon creation, a rank and suit are assigned
