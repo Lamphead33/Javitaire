@@ -13,9 +13,14 @@ public abstract class CardPile {
     
     public void moveCard(Tableau t) {
         Card c = this.cardsInPile.get(this.cardsInPile.size() - 1);
-        this.cardsInPile.remove(this.cardsInPile.size() - 1);
-        t.addCard(c);
-        this.pileSize--;
+        if (t.canAccept(c)) {
+            this.cardsInPile.remove(this.cardsInPile.size() - 1);
+            t.addCard(c);
+            this.pileSize--;
+        }
+        else {
+            // CARD CANNOT BE MOVED TO TARGET
+        }
         
         if (this.cardsInPile.isEmpty()) {
             this.isEmpty = true;
@@ -24,13 +29,23 @@ public abstract class CardPile {
     
     public void moveCard(Foundation f) {
         Card c = this.cardsInPile.get(this.cardsInPile.size() - 1);
-        this.cardsInPile.remove(this.cardsInPile.size() - 1);
-        f.addCard(c);
-        this.pileSize--;
-        
+        if (f.canAccept(c)) {
+            this.cardsInPile.remove(this.cardsInPile.size() - 1);
+            f.addCard(c);
+            this.pileSize--;
+        }
+        else {
+            // CARD CANNOT BE MOVED TO TARGET
+        }
         if (this.cardsInPile.isEmpty()) {
             this.isEmpty = true;
         }
+    }
+    
+    
+    
+    public boolean canAccept(Card c) {
+        return false;
     }
 
 }
