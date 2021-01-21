@@ -69,10 +69,8 @@ public class Board {
 	} 
 
 	private static void playNewGame() {
-		/* needs way more logic in here
-		deck = new CardPile(true); 
-		Deck.shuffle(); 
-		*/
+		Game g = new Game();
+		g.newGame();
 		
 		newGameButton.addActionListener(new NewGameListener());
 		newGameButton.setBounds(10, BOARD_HEIGHT - 100, 120, 30);
