@@ -2,6 +2,10 @@ import java.util.ArrayList;
 
 public class Stock extends CardPile {
     
+    public Stock() {
+        this.cardsInPile = new ArrayList<Card>();
+    }
+    
     // Overload - Stock can only move cards to Waste. When it does, cards in Waste are moved to bottom of Stock.
     public void moveCard(Waste w) {
         // Create a temporary Stock array and add all current cards in stock to it
@@ -37,6 +41,22 @@ public class Stock extends CardPile {
          */
     }
     
+    // Following method is used to deal initial cards from Stock to Tableau
+    public void dealCard(Tableau t, int num) {
+        
+        for (int i = 0; i < num; i++) {
+            // Get top card of stock
+            Card c = this.cardsInPile.get(this.cardsInPile.size() - 1);
+            // Add card to tableau and remove from stock
+            t.addCard(c);
+            this.cardsInPile.remove(this.cardsInPile.size() - 1);
+
+        }
+        
+        if (this.cardsInPile.isEmpty()) {
+            this.isEmpty = true;
+        }
+    }
     
     
     

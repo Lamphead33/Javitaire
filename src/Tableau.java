@@ -1,5 +1,10 @@
+import java.util.ArrayList;
 
 public class Tableau extends CardPile {
+    
+    public Tableau() {
+        this.cardsInPile = new ArrayList<Card>();
+    }
     
     @Override
     public boolean canAccept(Card c) {

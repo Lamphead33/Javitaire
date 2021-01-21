@@ -6,7 +6,7 @@ public abstract class CardPile {
     protected boolean isEmpty = true;
     
     public void addCard(Card c) {
-        cardsInPile.add(c);
+        this.cardsInPile.add(c);
         this.pileSize++;
         this.isEmpty = false;
     }

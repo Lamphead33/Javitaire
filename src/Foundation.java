@@ -1,5 +1,10 @@
+import java.util.ArrayList;
 
 public class Foundation extends CardPile {
+    
+    public Foundation() {
+        this.cardsInPile = new ArrayList<Card>();
+    }
     
     // Acceptance criteria for Foundation piles
     public boolean canAccept(Card c) {
