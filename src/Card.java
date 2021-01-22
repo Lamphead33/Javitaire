@@ -101,6 +101,10 @@ public class Card {
         this.faceDown = false;
     }
     
+    public void setFaceDown() {
+        this.faceDown = true;
+    }
+    
     public void setLocation(CardPile c) {
         this.location = c;
     }

@@ -3,12 +3,12 @@ import java.util.Collections;
 
 public class Deck {
     private ArrayList<Card> deck = new ArrayList<Card>();
-    private String[] suits = new String[]{"Hearts", "Diamonds", "Spades", "Clubs"};
+    private String[] suit = new String[]{"H", "D", "S", "C"};
     
     // Deck is populated upon creation
     public Deck() {
         // Generates the deck -
-        for (String currentSuit : suits) {
+        for (String currentSuit : suit) {
             for (int i = 1; i < 14; i++ ) {
                 Card c = new Card(i, currentSuit);
                 deck.add(c);

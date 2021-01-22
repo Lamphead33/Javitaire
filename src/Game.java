@@ -121,6 +121,12 @@ public class Game {
                 return true;
             }
             
+            
+            // This handles flipping a card (or three, depending on rules) from stock to Waste
+            if (c.getLocation() instanceof Stock) {
+                this.flipFromStock();
+            }
+            
             // If we get here, return false
             return false;
         }
@@ -148,11 +154,32 @@ public class Game {
     public void selectCard(Card c) {
         if (isSelectable(c)) {
             selectedCard = c;
+            
+            // Flips selected card if it's face down
+            if (selectedCard.isFaceDown()) {
+                selectedCard.setFaceUp();
+            }
         }
     }
     
     public void moveCard(Card c) {
         selectedCard.getLocation().moveCard(c.getLocation());
+    }
+    
+    // Deals new cards from stock to waste
+    public void flipFromStock() {
+        stock.moveCard(waste);
+        
+        // Following for loops ensure waste cards are face up and stock cards are face down,
+        // and sets their location appropriately
+        for (int i = 0; i < waste.cardsInPile.size(); i++) {
+            waste.cardsInPile.get(i).setFaceUp();
+            waste.cardsInPile.get(i).setLocation(waste);
+        }
+        for (int i = 0; i < stock.cardsInPile.size(); i++) {
+            stock.cardsInPile.get(i).setFaceDown();
+            stock.cardsInPile.get(i).setLocation(stock);
+        }
     }
     
     

@@ -20,6 +20,7 @@ public class Stock extends CardPile {
         // Move cards from Waste to bottom of Stock
         for (int i = 0; i < w.cardsInPile.size(); i++) {
             this.cardsInPile.add(w.cardsInPile.get(i));
+            this.cardsInPile.get(i).setFaceDown();
         }
         // Erase original Waste pile
         for (int i = 0; i < w.cardsInPile.size(); i++) {
@@ -33,6 +34,7 @@ public class Stock extends CardPile {
         // Finally, add card to waste
         Card c = this.cardsInPile.get(this.cardsInPile.size() - 1);
         w.addCard(c);
+        c.setFaceUp();
         
         /* 
          *      We need to eventually implement an option to implement either 1 or 3 card Wastes.
