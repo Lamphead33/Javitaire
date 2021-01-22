@@ -49,6 +49,7 @@ public class Stock extends CardPile {
             Card c = this.cardsInPile.get(this.cardsInPile.size() - 1);
             // Add card to tableau and remove from stock
             t.addCard(c);
+            c.setLocation(t);
             this.cardsInPile.remove(this.cardsInPile.size() - 1);
 
         }

@@ -3,6 +3,12 @@
 public class Game {
     public Tableau[] tableaus = new Tableau[7];
     public Foundation[] foundations = new Foundation[4];
+    public Card selectedCard;
+    public Deck deck;
+    public Stock stock;
+    public Waste waste;
+    public CardPile targetPile;
+    public boolean aCardIsSelected;
 
     
     
@@ -12,9 +18,9 @@ public class Game {
     
     public void initializeCards() {
         // Initializes deck, stock, and all foundations and tableaus
-        Deck deck = new Deck();
-        Stock stock = new Stock();
-        Waste waste = new Waste();
+        deck = new Deck();
+        stock = new Stock();
+        waste = new Waste();
         for (int i = 0; i < 7; i++) {
             tableaus[i] = new Tableau();
         }
@@ -35,6 +41,8 @@ public class Game {
         for (int i = 0; i < tableaus.length; i++) {
             tableaus[i].cardsInPile.get(tableaus[i].cardsInPile.size() - 1).setFaceUp();
         }
+        
+        this.aCardIsSelected = false;
         
         
         // Test below
@@ -82,6 +90,73 @@ public class Game {
             return true;
         } else return false;
     }
+    
+    
+    /*
+     * The following is to check that a clicked on card is selectable, ie: it is the card 
+     * at the bottom of a tableau column, or is the top card of a foundation pile
+     */
+    public boolean isSelectable(Card c) {
+        // Checks if a card is selected (THIS IS HOW THE GAME KNOWS IF
+        // YOU'RE CHOOSING A CARD TO MOVE OR CHOOSING A PLACE TO MOVE A CARD TO)
+        
+        // This handles selecting a card when one isn't selected
+        if (!this.aCardIsSelected) {
+        // Iterates through tables
+            for (int i = 0; i < 7; i++) {
+                if (tableaus[i].cardsInPile.get(tableaus[i].cardsInPile.size() - 1) == c) {
+                    return true;
+                }
+            }
+            
+            // Iterates through foundations
+            for (int i = 0; i < 4; i++) {
+                if (foundations[i].cardsInPile.get(foundations[i].cardsInPile.size() - 1) == c) {
+                    return true;
+                }
+            }
+            
+            // Check waste
+            if (waste.cardsInPile.get(waste.cardsInPile.size() - 1) == c) {
+                return true;
+            }
+            
+            // If we get here, return false
+            return false;
+        }
+        
+        
+        // This logic handles MOVING an already selected card
+        else {
+            // UNDO select card if you click on it again
+            if (c == selectedCard) {
+                selectedCard = null;
+                aCardIsSelected = false;
+                return false;
+            }
+            // This handles moving the card to a specific location.
+            else {
+                moveCard(c);
+                return false;
+            }
+            
+            
+        }
+    }
+    
+    // Make clicked on card become the selected card
+    public void selectCard(Card c) {
+        if (isSelectable(c)) {
+            selectedCard = c;
+        }
+    }
+    
+    public void moveCard(Card c) {
+        selectedCard.getLocation().moveCard(c.getLocation());
+    }
+    
+    
+    
     
 
 }
