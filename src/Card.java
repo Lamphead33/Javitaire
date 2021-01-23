@@ -8,6 +8,8 @@ public class Card {
     private CardPile location;
     final static public int CARD_HEIGHT = 150;
 	final static public int CARD_WIDTH = 100;
+	private String imageName;
+	private String activeImage;
     
     
     // Constructor - upon creation, a rank and suit are assigned
@@ -15,7 +17,7 @@ public class Card {
         this.rankId = rankId;
         this.suit = suit;
         this.faceDown = true;
-        if (suit.equals("Spades") || suit.equals("Clubs")) {
+        if (suit.equals("S") || suit.equals("C")) {
             colour = "Black";
         }
         else {
@@ -63,6 +65,10 @@ public class Card {
                 this.rank = "K";
                 break;
         }   
+        
+        // Sets default image name
+        this.imageName = (this.rank + this.suit + ".png");
+        
     }
     
     
@@ -95,14 +101,20 @@ public class Card {
         return this.location;
     }
     
+    public String getImage() {
+        return activeImage;
+    }
+    
     
     // Setters 
     public void setFaceUp() {
         this.faceDown = false;
+        this.activeImage = imageName;
     }
     
     public void setFaceDown() {
         this.faceDown = true;
+        this.imageName = "cardBack.png";
     }
     
     public void setLocation(CardPile c) {
