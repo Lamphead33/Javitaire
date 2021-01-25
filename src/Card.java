@@ -109,12 +109,12 @@ public class Card {
     // Setters 
     public void setFaceUp() {
         this.faceDown = false;
-        this.activeImage = imageName;
+        this.activeImage = "/CardImages/" + imageName + ".svg";
     }
     
     public void setFaceDown() {
         this.faceDown = true;
-        this.imageName = "cardBack.png";
+        this.activeImage = "/CardImages/cardBack.svg";
     }
     
     public void setLocation(CardPile c) {
