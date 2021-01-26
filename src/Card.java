@@ -112,6 +112,9 @@ public class Card extends JPanel {
         return activeImage;
     }
     
+    public CardPile getPile() {
+        return this.location;
+    }
     
     // Setters 
     public void setFaceUp() {

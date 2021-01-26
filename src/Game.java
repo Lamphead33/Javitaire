@@ -125,7 +125,7 @@ public class Game {
             
             
             //This handles flipping a card (or three, depending on rules) from stock to Waste
-            if (c.selectedCard() instanceof Stock) {
+            if (c.getPile() instanceof Stock) {
                 this.flipFromStock();
             }
             
@@ -166,7 +166,7 @@ public class Game {
     
     
     public void moveCard(Card c) {
-        selectedCard.getLocation().moveCard(c.getLocation());
+        selectedCard.getPile().moveCard(c.getPile());
     }
     
     // Deals new cards from stock to waste
