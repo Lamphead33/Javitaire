@@ -1,3 +1,10 @@
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.awt.Dimension;
+
+import javax.imageio.ImageIO;
 
 public class Card {
     private String rank;
@@ -9,7 +16,7 @@ public class Card {
     final static public int CARD_HEIGHT = 150;
 	final static public int CARD_WIDTH = 100;
 	private String imageName;
-	private String activeImage;
+	private BufferedImage activeImage;
     
     
     // Constructor - upon creation, a rank and suit are assigned
@@ -101,7 +108,7 @@ public class Card {
         return this.location;
     }
     
-    public String getImage() {
+    public BufferedImage getImage() {
         return activeImage;
     }
     
@@ -109,15 +116,32 @@ public class Card {
     // Setters 
     public void setFaceUp() {
         this.faceDown = false;
-        this.activeImage = "/CardImages/" + imageName + ".svg";
+        URL url = getClass().getResource("/./CardImages/" + this.toString() + ".svg");
+        try {
+			activeImage = ImageIO.read(url);
+			
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public void setFaceDown() {
         this.faceDown = true;
-        this.activeImage = "/CardImages/cardBack.svg";
+        URL url = getClass().getResource("/CardImages/cardBack.svg");
+        try {
+			activeImage = ImageIO.read(url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public void setLocation(CardPile c) {
         this.location = c;
+    }
+    
+    protected void paintComponent(Graphics g) {
+    	g.drawImage(activeImage, 0, 0, null);
     }
 }

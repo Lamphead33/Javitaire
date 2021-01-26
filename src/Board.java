@@ -42,7 +42,7 @@ public class Board {
 
 		contentPane = frame.getContentPane();
 		contentPane.add(table);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //exits app on close of window
 
 		createTopMenu();
 		playNewGame();
