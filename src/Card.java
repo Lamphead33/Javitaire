@@ -116,6 +116,7 @@ public class Card {
     // Setters 
     public void setFaceUp() {
         this.faceDown = false;
+        //something about line 120 is casuing a null input for the sources
         URL url = getClass().getResource("/./CardImages/" + this.toString() + ".svg");
         try {
 			activeImage = ImageIO.read(url);
