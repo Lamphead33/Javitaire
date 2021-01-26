@@ -5,8 +5,11 @@ public class Card {
     private int rankId;
     private String colour;
     private boolean faceDown;
+    private CardPile location;
     final static public int CARD_HEIGHT = 150;
 	final static public int CARD_WIDTH = 100;
+	private String imageName;
+	private String activeImage;
     
     
     // Constructor - upon creation, a rank and suit are assigned
@@ -14,7 +17,7 @@ public class Card {
         this.rankId = rankId;
         this.suit = suit;
         this.faceDown = true;
-        if (suit.equals("Spades") || suit.equals("Clubs")) {
+        if (suit.equals("S") || suit.equals("C")) {
             colour = "Black";
         }
         else {
@@ -23,45 +26,49 @@ public class Card {
         
         switch (rankId) {
             case 1:
-                this.rank = "Ace of ";
+                this.rank = "A";
                 break;
             case 2:
-                this.rank = "Two of ";
+                this.rank = "2";
                 break;
             case 3:
-                this.rank = "Three of ";
+                this.rank = "3";
                 break;
             case 4:
-                this.rank = "Four of ";
+                this.rank = "4";
                 break;
             case 5:
-                this.rank = "Five of ";
+                this.rank = "5";
                 break;
             case 6:
-                this.rank = "Six of ";
+                this.rank = "6";
                 break;
             case 7:
-                this.rank = "Seven of ";
+                this.rank = "7";
                 break;
             case 8:
-                this.rank = "Eight of ";
+                this.rank = "8";
                 break;
             case 9:
-                this.rank = "Nine of ";
+                this.rank = "9";
                 break;
             case 10:
-                this.rank = "Ten of ";
+                this.rank = "10";
                 break;
             case 11:
-                this.rank = "Jack of ";
+                this.rank = "J";
                 break;
             case 12:
-                this.rank = "Queen of ";
+                this.rank = "Q";
                 break;
             case 13:
-                this.rank = "King of ";
+                this.rank = "K";
                 break;
         }   
+        
+        // Sets default image name
+        this.imageName = (this.rank + this.suit + ".png");
+        
     }
     
     
@@ -90,9 +97,27 @@ public class Card {
         return this.faceDown;
     }
     
+    public CardPile getLocation() {
+        return this.location;
+    }
+    
+    public String getImage() {
+        return activeImage;
+    }
+    
     
     // Setters 
     public void setFaceUp() {
         this.faceDown = false;
+        this.activeImage = "/CardImages/" + imageName + ".svg";
+    }
+    
+    public void setFaceDown() {
+        this.faceDown = true;
+        this.activeImage = "/CardImages/cardBack.svg";
+    }
+    
+    public void setLocation(CardPile c) {
+        this.location = c;
     }
 }
