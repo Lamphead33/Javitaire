@@ -21,7 +21,7 @@ public abstract class CardPile {
             if (pile.canAccept(c)) {
                 this.cardsInPile.remove(this.cardsInPile.size() - 1);
                 pile.addCard(c);
-                c.setLocation(pile);
+                //c.getPile();
                 this.pileSize--;
             }
             else {
@@ -41,7 +41,7 @@ public abstract class CardPile {
             if (pile.canAccept(c)) {
                 this.cardsInPile.remove(this.cardsInPile.size() - 1);
                 pile.addCard(c);
-                c.setLocation(pile);
+                //c.getPile();
                 this.pileSize--;
             }
             else {
@@ -69,7 +69,7 @@ public abstract class CardPile {
         if (t.canAccept(c)) {
             this.cardsInPile.remove(this.cardsInPile.size() - 1);
             t.addCard(c);
-            c.setLocation(t);
+            //c.getPile();
             this.pileSize--;
         }
         else {
@@ -88,7 +88,7 @@ public abstract class CardPile {
         if (f.canAccept(c)) {
             this.cardsInPile.remove(this.cardsInPile.size() - 1);
             f.addCard(c);
-            c.setLocation(f);
+            //c.getPile();
             this.pileSize--;
         }
         else {

@@ -1,12 +1,15 @@
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.awt.Dimension;
 
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
-public class Card {
+public class Card extends JPanel {
     private String rank;
     private String suit;
     private int rankId;
@@ -17,6 +20,7 @@ public class Card {
 	final static public int CARD_WIDTH = 100;
 	private String imageName;
 	private BufferedImage activeImage;
+	Point positionOffset;
     
     
     // Constructor - upon creation, a rank and suit are assigned
@@ -74,7 +78,7 @@ public class Card {
         }   
         
         // Sets default image name
-        this.imageName = (this.rank + this.suit + ".png");
+        this.imageName = (this.rank + this.suit + ".svg");
         
     }
     
@@ -104,10 +108,6 @@ public class Card {
         return this.faceDown;
     }
     
-    public CardPile getLocation() {
-        return this.location;
-    }
-    
     public BufferedImage getImage() {
         return activeImage;
     }
@@ -116,10 +116,9 @@ public class Card {
     // Setters 
     public void setFaceUp() {
         this.faceDown = false;
-        //something about line 120 is casuing a null input for the sources
-        URL url = getClass().getResource("/./CardImages/" + this.toString() + ".svg");
+        String dir = System.getProperty("user.dir");
         try {
-			activeImage = ImageIO.read(url);
+        	activeImage = ImageIO.read(new File(dir + "/CardImages/" + this.imageName));
 			
         } catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -129,20 +128,25 @@ public class Card {
     
     public void setFaceDown() {
         this.faceDown = true;
-        URL url = getClass().getResource("/CardImages/cardBack.svg");
+        String dir = System.getProperty("user.dir");
         try {
-			activeImage = ImageIO.read(url);
+			activeImage = ImageIO.read(new File(dir + "/CardImages/" + this.imageName));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+		setOpaque(false);
     }
     
     public void setLocation(CardPile c) {
         this.location = c;
     }
     
+    @Override
     protected void paintComponent(Graphics g) {
-    	g.drawImage(activeImage, 0, 0, null);
+    	super.paintComponent(g);
+    	BufferedImage img = activeImage;
+    	g.drawImage(img, 50, 50, null);
     }
 }

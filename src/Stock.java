@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Stock extends CardPile {
-    
+	
     public Stock() {
         this.cardsInPile = new ArrayList<Card>();
     }
@@ -41,7 +41,8 @@ public class Stock extends CardPile {
          *      For this, we'd just create a global boolean, isThree or something. Then, right here
          *      we'd just add three cards to the waste instead of one.
          */
-    }
+	
+    } 
     
     // Following method is used to deal initial cards from Stock to Tableau
     public void dealCard(Tableau t, int num) {
@@ -59,20 +60,19 @@ public class Stock extends CardPile {
         if (this.cardsInPile.isEmpty()) {
             this.isEmpty = true;
         }
-    }
-    
-    
+    } 
     
     /*
      *       This shouldn't come up, but if we make a mistake, the following overrides
      *       will prevent the Stock from moving cards to anywhere except for the Waste.       
      */
     
+	
     @Override
     public void moveCard(Tableau t) {
     }
+    
     @Override
     public void moveCard(Foundation f) {
-    }
-
-}
+    } 
+} 

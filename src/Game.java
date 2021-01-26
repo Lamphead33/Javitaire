@@ -96,6 +96,8 @@ public class Game {
      * The following is to check that a clicked on card is selectable, ie: it is the card 
      * at the bottom of a tableau column, or is the top card of a foundation pile
      */
+    
+    
     public boolean isSelectable(Card c) {
         // Checks if a card is selected (THIS IS HOW THE GAME KNOWS IF
         // YOU'RE CHOOSING A CARD TO MOVE OR CHOOSING A PLACE TO MOVE A CARD TO)
@@ -122,14 +124,14 @@ public class Game {
             }
             
             
-            // This handles flipping a card (or three, depending on rules) from stock to Waste
-            if (c.getLocation() instanceof Stock) {
+            //This handles flipping a card (or three, depending on rules) from stock to Waste
+            if (c.selectedCard() instanceof Stock) {
                 this.flipFromStock();
             }
             
             // If we get here, return false
             return false;
-        }
+        } 
         
         
         // This logic handles MOVING an already selected card
@@ -142,13 +144,13 @@ public class Game {
             }
             // This handles moving the card to a specific location.
             else {
-                moveCard(c);
+                //moveCard(c);
                 return false;
             }
             
-            
-        }
+          } 
     }
+    
     
     // Make clicked on card become the selected card
     public void selectCard(Card c) {
@@ -162,6 +164,7 @@ public class Game {
         }
     }
     
+    
     public void moveCard(Card c) {
         selectedCard.getLocation().moveCard(c.getLocation());
     }
@@ -174,16 +177,12 @@ public class Game {
         // and sets their location appropriately
         for (int i = 0; i < waste.cardsInPile.size(); i++) {
             waste.cardsInPile.get(i).setFaceUp();
-            waste.cardsInPile.get(i).setLocation(waste);
+            //waste.cardsInPile.get(i).getPile(waste);
         }
         for (int i = 0; i < stock.cardsInPile.size(); i++) {
             stock.cardsInPile.get(i).setFaceDown();
-            stock.cardsInPile.get(i).setLocation(stock);
+            //stock.cardsInPile.get(i).getPile(stock);
         }
-    }
-    
-    
-    
-    
+    } 
 
 }
