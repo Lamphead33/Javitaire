@@ -9,43 +9,39 @@ import java.awt.geom.RoundRectangle2D;
  * Foundation 
  */
 
-class FinalStack extends CardStack {
+class Foundation extends CardPile {
 
 	//
 	private static final long serialVersionUID = 4962548240071318600L;
 
-	public FinalStack()
-	{
+	public Foundation() {
 		super(false);
 	}
 
+	
 	@Override
-	public void setXY(int x, int y)
-	{
+	public void setXY(int x, int y) {
 		_x = x;
 		_y = y;
 		setBounds(_x, _y, Card.CARD_WIDTH + 10, Card.CARD_HEIGHT + 10);
 	}
 
+	
 	@Override
-	public boolean contains(Point p)
-	{
+	public boolean contains(Point p) {
 		Rectangle rect = new Rectangle(_x, _y, Card.CARD_WIDTH + 10, Card.CARD_HEIGHT + 10);
 		return (rect.contains(p));
-	}
+	} 
 
 	/*
-	 * We draw this stack one card on top of the other
+	 * This draws the "ace" stacks, where the foundation decks go
 	 */
 	@Override
-	protected void paintComponent(Graphics g)
-	{
+	protected void paintComponent(Graphics g) {
 		removeAll();
-		if (!empty())
-		{
+		if (!empty()) {
 			add(Board.moveCard(this.getLast(), 1, 1));
-		} else
-		{
+		} else {
 			// draw the stack area for the ACE cards
 			Graphics2D g2d = (Graphics2D) g;
 			RoundRectangle2D rect = new RoundRectangle2D.Double(0, 0, Card.CARD_WIDTH, Card.CARD_HEIGHT,
@@ -55,6 +51,5 @@ class FinalStack extends CardStack {
 			g2d.setColor(Color.black);
 			g2d.draw(rect);
 		}
-
 	}
 }

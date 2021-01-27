@@ -36,10 +36,10 @@ public class Board
 	public static final Point PLAY_POS = new Point(DECK_POS.x, FINAL_POS.y + Card.CARD_HEIGHT + 30);
 
 	// GAMEPLAY STRUCTURES
-	private static FinalStack[] final_cards;// Foundation Stacks
-	private static CardStack[] playCardStack; // Tableau stacks
+	private static Foundation[] final_cards;// Foundation Stacks
+	private static CardPile[] playCardStack; // Tableau stacks
 	private static final Card newCardPlace = new Card();// waste card spot
-	private static CardStack deck; // populated with standard 52 card deck
+	private static CardPile deck; // populated with standard 52 card deck
 
 	// GUI COMPONENTS (top level)
 	private static final JFrame frame = new JFrame("Klondike Solitaire");
@@ -58,6 +58,7 @@ public class Board
 		c.setXY(new Point(x, y));
 		return c;
 	}
+	
 	
 	//main method and window initialization 
 	public static void main(String[] args) {
@@ -96,9 +97,8 @@ public class Board
 		frame.setJMenuBar(mb);
 	}
 
-	private static void playNewGame()
-	{
-		deck = new CardStack(true); // deal 52 cards
+	private static void playNewGame() {
+		deck = new CardPile(true); // deal 52 cards
 		//deck.shuffle(); shuffle function, logic not in yet.
 		table.removeAll();
 		
@@ -114,24 +114,23 @@ public class Board
 				final_cards[x].makeEmpty(); //reset
 			}
 		}
+		
 		// initialize & place foundation decks on the board
-		final_cards = new FinalStack[NUM_FINAL_DECKS];
-		for (int x = 0; x < NUM_FINAL_DECKS; x++)
-		{
-			final_cards[x] = new FinalStack();
+		final_cards = new Foundation[NUM_FINAL_DECKS];
+		for (int x = 0; x < NUM_FINAL_DECKS; x++) {
+			final_cards[x] = new Foundation();
 
 			final_cards[x].setXY((FINAL_POS.x + (x * Card.CARD_WIDTH)) + 10, FINAL_POS.y); //setting location
 			table.add(final_cards[x]); //adding to board
-
 		}
-		// place new card distribution button
+		
+		//deck button to reveal waste card
 		table.add(moveCard(newCardButton, DECK_POS.x, DECK_POS.y));
 		
 		// initialize & place play (tableau) decks/stacks
-		playCardStack = new CardStack[NUM_PLAY_DECKS];
-		for (int x = 0; x < NUM_PLAY_DECKS; x++)
-		{
-			playCardStack[x] = new CardStack(false);
+		playCardStack = new CardPile[NUM_PLAY_DECKS];
+		for (int x = 0; x < NUM_PLAY_DECKS; x++) {
+			playCardStack[x] = new CardPile(false);
 			playCardStack[x].setXY((DECK_POS.x + (x * (Card.CARD_WIDTH + 10))), PLAY_POS.y);
 
 			table.add(playCardStack[x]);
