@@ -1,8 +1,11 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -22,6 +25,7 @@ public class Board {
 	//GUI
 	private static final JFrame frame = new JFrame("Javitaire");
 	protected static final JPanel table = new JPanel();
+	Point mouseOffset;
 	
 	//TABLES & DECKS
 	public static final int BOARD_HEIGHT = Card.CARD_HEIGHT * 4;
@@ -66,6 +70,7 @@ public class Board {
 		
 		mb.add(x);
 		frame.setJMenuBar(mb);
+		
 	} 
 
 	private static void playNewGame() {

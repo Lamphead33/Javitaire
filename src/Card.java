@@ -127,6 +127,10 @@ public class Card extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        positionOffset = new Point(0,0);
+		setSize(new Dimension(20, 45));
+		setOpaque(false);
     }
     
     public void setFaceDown() {
@@ -138,8 +142,6 @@ public class Card extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-		setOpaque(false);
     }
     
     public void setLocation(CardPile c) {
@@ -150,6 +152,6 @@ public class Card extends JPanel {
     protected void paintComponent(Graphics g) {
     	super.paintComponent(g);
     	BufferedImage img = activeImage;
-    	g.drawImage(img, 50, 50, null);
+    	g.drawImage(img, 0, 0, activeImage.getHeight(), activeImage.getWidth(), null);
     }
 }

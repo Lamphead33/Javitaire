@@ -10,7 +10,10 @@ public class Game {
     public CardPile targetPile;
     public boolean aCardIsSelected;
 
-    
+    public static void main(String[] args) {
+        Game g = new Game();
+        g.newGame();
+    }
     
     public void newGame() {
         this.initializeCards();  
@@ -67,13 +70,6 @@ public class Game {
         
 
     }
-    
-    public static void main(String[] args) {
-        Game g = new Game();
-        g.newGame();
-    }
-    
-    
     
     /* Check for a victory -
      * This method will eventually be called every time a card is added to a foundation.
@@ -148,7 +144,7 @@ public class Game {
                 return false;
             }
             
-          } 
+          }
     }
     
     
