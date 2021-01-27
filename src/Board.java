@@ -36,6 +36,8 @@ public class Board {
 	static JMenu x;
 	static JMenuItem ng, vegas, rules;
 	private static JButton newGameButton = new JButton("New Game");
+	private static Component deck;
+	
 
 	public static void main(String[] args) {
 		Container contentPane;
@@ -52,6 +54,8 @@ public class Board {
 		playNewGame();
 		
 		table.add(newGameButton);
+		//the add deck should NOT be a Component (should be CardPile)??? I think this might be the issue
+		//frame.add(deck);
 
 		frame.setVisible(true);
 	}
