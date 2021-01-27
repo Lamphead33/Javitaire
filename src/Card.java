@@ -12,6 +12,8 @@ class Card extends JPanel {
 	private Suit _suit;
 
 	private Value _value;
+	
+	private int rank; // 0-12, to compare against other cards on movement checks
 
 	private Boolean _faceup;
 
@@ -19,6 +21,8 @@ class Card extends JPanel {
 
 	private Point whereAmI; // used to create abs postion rectangle for contains
 	// functions
+	
+	private CardPile currentPile;
 
 	private int x; // used for relative positioning within CardPile Container
 	private int y;
@@ -140,6 +144,22 @@ class Card extends JPanel {
 	public Boolean getFaceStatus() {
 		return _faceup;
 	}
+	
+	public int getRank() {
+	    return rank;
+	}
+	
+	public CardPile getCurrentPile() {
+	    return currentPile;
+	}
+	
+	public void setCurrentPile(CardPile c) {
+	    currentPile = c;
+	}
+	
+	public void setRank(int rank) {
+	    this.rank = rank;
+	}
 
 	public void setXY(Point p) {
 		x = p.x;
@@ -209,7 +229,7 @@ class Card extends JPanel {
 				break;
 			}
 			
-			//int new_x_offset = x_offset + (CARD_WIDTH - 30);
+			//int new_x_offset = x_offset + (CARD_WIDTH - 30);          
 			
 			switch (_value) {
 			case ACE:

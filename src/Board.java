@@ -99,7 +99,7 @@ public class Board
 
 	private static void playNewGame() {
 		deck = new CardPile(true); // deal 52 cards
-		//deck.shuffle(); shuffle function, logic not in yet.
+		deck.shuffle();
 		table.removeAll();
 		
 		// reset stacks if user starts a new game

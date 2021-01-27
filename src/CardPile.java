@@ -23,10 +23,16 @@ class CardPile extends JComponent {
 	protected int SPREAD = 18; //this variable is the "stack distance" between cards on the tableau/spacing
 	protected int _x = 0;
 	protected int _y = 0;
-
+	
+	// FUNCTIONAL BOOLEANS
+	private boolean isTableau;
+	private boolean isDeck;
+	private boolean isWaste;
+	private boolean isFoundation;
+	
+	
 	public CardPile(boolean isDeck)
 	{
-		int f = 1;
 		this.setLayout(null);
 		cardsInPile = new ArrayList<Card>();
 		if (isDeck)
@@ -34,9 +40,12 @@ class CardPile extends JComponent {
 			// set deck position
 			for (Suit suit : Suit.values())
 			{
+			    int r = 0;
 				for (Value value : Value.values())
 				{
-					cardsInPile.add(new Card(suit, value));
+				    Card c = new Card(suit, value);
+				    c.setRank(r);
+					cardsInPile.add(c);
 				}
 			}
 		} else {
@@ -130,6 +139,44 @@ class CardPile extends JComponent {
 		cardsInPile.add(0, card);
 	}
 
+	
+	
+	
+	
+	/* The next 8 methods are the least elegant solution
+	 *  to any problem, maybe ever
+	 */
+	public void setFoundation() {
+	    this.isFoundation = true;
+	}
+	public void setTableau() {
+	    this.isTableau = true;
+	}
+	public void setDeck() {
+	    isDeck = true;
+	}
+	public void setWaste() {
+	    isWaste = true;
+	}
+
+	public boolean isTableau() {
+	    return isTableau;
+	}
+	public boolean isDeck() {
+	    return isDeck();
+	}
+	public boolean isFoundation() {
+	    return isFoundation();
+	}
+	public boolean isWaste() {
+	    return isWaste();
+	}
+	
+	
+	
+	
+	
+	
 	/*
 	@Override
 	public boolean contains(Point p) {
