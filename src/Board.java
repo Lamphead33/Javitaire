@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -141,6 +142,7 @@ public class Board
 		for (int x = 0; x < NUM_FINAL_DECKS; x++) {
 			final_cards[x] = new Foundation();
 			final_cards[x].setFoundation();
+			final_cards[x].addMouseListener(new FoundationListener(final_cards[x]));
 
 			final_cards[x].setXY((FINAL_POS.x + (x * Card.CARD_WIDTH)) + 10, FINAL_POS.y); //setting location
 			table.add(final_cards[x]); //adding to board
@@ -185,6 +187,7 @@ public class Board
 		table.add(testButton);
 		table.repaint();
 		
+		
 	}
 	
 	// BUTTON LISTENERS
@@ -218,6 +221,7 @@ public class Board
 	        if (c.getFaceStatus()) {
     	        if (game.selectedCard == null) {
     	            game.selectedCard = c;
+    	            System.out.println("A card is selected.");
     	        }
     	        else if (game.selectedCard != null) {
     	            game.moveCard(game.selectedCard, c.getCurrentPile());
@@ -228,34 +232,26 @@ public class Board
 	        if (!c.getFaceStatus()) {
 	            c.setFaceup();
 	        }
-    	        
-	        
-	        
 	    }
+	    
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	   private static class FoundationListener extends MouseAdapter {
+	       Foundation f;
+	       
+	       public FoundationListener(Foundation f) {
+	           this.f = f;
+	       }
+	       
+	       @Override
+	       public void mouseClicked(MouseEvent e) {
+	           
+	           game.moveToFoundation(game.selectedCard, f);
+	           
+	           table.repaint();
+	           
+	       }
+	    
+	}
 	
 }

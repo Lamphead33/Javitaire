@@ -29,7 +29,7 @@ class Card extends JButton {
 	
 	private String colour;
 	
-	private boolean isSelected;
+	private boolean isSelected = false;
 	
 	UUID uuid;
 
@@ -243,8 +243,8 @@ class Card extends JButton {
 		    g2d.setColor(Color.WHITE);
             g2d.fill(rect2);
             g2d.setColor(Color.black);
-            g2d.draw(rect2); 
-		
+            g2d.draw(rect2);  
+
 		//If faceup, draw the card. 
 		if (_faceup) {
 			switch (_suit) {
