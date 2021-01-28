@@ -8,7 +8,7 @@ public class Game {
     
     public void moveCard(Card c, CardPile p) {
         Card t = p.cardsInPile.get(0);
-        
+
         // Tableau logic
         if (p.isTableau()) {
             if (c.getRank() == (t.getRank() - 1) && (c.getColour() != t.getColour())) {

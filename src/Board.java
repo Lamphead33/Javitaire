@@ -121,7 +121,6 @@ public class Board
 		}
 
         
-		
 		table.removeAll();
 		
 		// reset stacks if user starts a new game
@@ -150,6 +149,7 @@ public class Board
 		
 		//deck button to reveal waste card
 		table.add(moveCard(newCardButton, DECK_POS.x, DECK_POS.y));
+		newCardButton.addActionListener(new WasteListener());
 		
 		// initialize & place play (tableau) decks/stacks
 		playCardStack = new CardPile[NUM_PLAY_DECKS];
@@ -208,6 +208,18 @@ public class Board
 	        table.repaint();
 	    }
 	}
+	
+	//reveals waste card
+	private static class WasteListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Card c = deck.pop().setFaceup();
+			table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
+			c.repaint();
+			table.repaint();
+		}
+	}
+		
 	
 	private static class CardListener implements ActionListener {
 	    Card c;
