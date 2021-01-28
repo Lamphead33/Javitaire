@@ -46,6 +46,7 @@ class CardPile extends JComponent {
 				    Card c = new Card(suit, value);
 				    c.setRank(r);
 					cardsInPile.add(c);
+					r++;
 				}
 			}
 		} else {

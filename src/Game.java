@@ -5,9 +5,17 @@ public class Game {
     public Card selectedCard; // Tracks which card is selected
     
     public void moveCard(Card c, CardPile p) {
-        p.putFirst(c);
-        c.getCurrentPile().removeCard();
-        //selectedCard = null;
+        Card t = p.cardsInPile.get(0);
+        
+        if (c.getRank() == (t.getRank() - 1) && (c.getColour() != t.getColour())) {
+            p.putFirst(c);
+            c.getCurrentPile().removeCard();
+            selectedCard = null;
+        }
+        
+        else {
+            selectedCard = null;
+        }
     }
     
 
