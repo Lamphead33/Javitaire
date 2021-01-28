@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-class Card extends JButton {
+class Card extends JButton  {
 
 	private Suit _suit;
 

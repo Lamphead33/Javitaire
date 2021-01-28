@@ -43,6 +43,7 @@ public class Board
 	private static CardPile deck; // populated with standard 52 card deck
 	private static boolean cardSelected; // tracks whether a card is currently selected
 	private static Game game;
+	private static CardPile waste;
 
 	// GUI COMPONENTS (top level)
 	private static final JFrame frame = new JFrame("Klondike Solitaire");
@@ -109,6 +110,9 @@ public class Board
 		deck.shuffle();
 		deck.setDeck();
 		
+		waste = new CardPile(false);
+		waste.setWaste();
+		
 		// Initializes location as 'deck' for each card
 		for (Card c : deck.cardsInPile) {
 		    c.setCurrentPile(deck);
@@ -157,6 +161,9 @@ public class Board
 			playCardStack[x] = new CardPile(false);
 			playCardStack[x].setTableau();
 			playCardStack[x].setXY((DECK_POS.x + (x * (Card.CARD_WIDTH + 10))), PLAY_POS.y);
+			
+			// vvvv I don't think this is gonna work. Need another solution for Kings onto blank spaces
+			// playCardStack[x].addMouseListener(new TableauListener(playCardStack[x]));
 
 			table.add(playCardStack[x]);
 		}
@@ -210,15 +217,29 @@ public class Board
 	}
 	
 	//reveals waste card
-	private static class WasteListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			Card c = deck.pop().setFaceup();
-			table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
-			c.repaint();
-			table.repaint();
-		}
-	}
+    private static class WasteListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Card c = deck.pop().setFaceup();
+            
+            if (waste.cardsInPile.isEmpty()) {
+                table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
+                waste.addCard(c);
+                c.repaint();
+                table.repaint();
+            }
+            else {
+                Card t = waste.cardsInPile.get(0);
+                deck.add(t);
+                waste.cardsInPile.removeAll(waste.cardsInPile);
+                
+                table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
+                waste.addCard(c);
+                c.repaint();
+                table.repaint();
+            }
+        }
+    }
 		
 	
 	private static class CardListener implements ActionListener {
@@ -237,12 +258,15 @@ public class Board
     	        }
     	        else if (game.selectedCard != null) {
     	            game.moveCard(game.selectedCard, c.getCurrentPile());
+    	            c.repaint();
     	            table.repaint();
     	        }
 	        }
 	        
-	        if (!c.getFaceStatus()) {
+	        if (!c.getFaceStatus() && c == c.getCurrentPile().cardsInPile.get(0)) {
 	            c.setFaceup();
+	            c.repaint();
+	            table.repaint();
 	        }
 	    }
 	    
@@ -265,5 +289,32 @@ public class Board
 	       }
 	    
 	}
+	   
+	   
+	   private static class TableauListener extends MouseAdapter {
+	       CardPile t;
+	       
+	       public TableauListener(CardPile t) {
+	           this.t = t;
+	       }
+	       
+	       @Override
+	       public void mouseClicked(MouseEvent e) {
+	           if (game.selectedCard != null) {
+	               game.moveToTableau(game.selectedCard, t);
+	               table.repaint();
+	           }
+	           else {
+	               
+	           }
+	       }
+	   }
 	
+	   
+	   
+	   
+	   
+	   
+	   
+	   
 }

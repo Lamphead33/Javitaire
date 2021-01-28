@@ -174,14 +174,15 @@ class CardPile extends JComponent {
 	    return isTableau;
 	}
 	public boolean isDeck() {
-	    return isDeck();
+	    return isDeck;
 	}
 	public boolean isFoundation() {
-	    return isFoundation();
+	    return isFoundation;
 	}
 	public boolean isWaste() {
-	    return isWaste();
+	    return isWaste;
 	}
+
 	
 	
 	

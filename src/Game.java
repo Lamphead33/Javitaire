@@ -11,7 +11,13 @@ public class Game {
 
         // Tableau logic
         if (p.isTableau()) {
-            if (c.getRank() == (t.getRank() - 1) && (c.getColour() != t.getColour())) {
+            
+
+            if (t.getCurrentPile().isWaste()) {
+                System.out.println(":(");
+            }
+            
+            if (c.getRank() == (t.getRank() - 1) && (c.getColour() != t.getColour())  ) {
                 
                 if (c == c.getCurrentPile().cardsInPile.get(0)) {
                 p.putFirst(c);
@@ -80,6 +86,18 @@ public class Game {
                 }
             }
         //}
+    
+    
+    public void moveToTableau(Card c, CardPile t) {
+        if (t.cardsInPile.isEmpty() && c.getRank() == 13) {
+            c.getCurrentPile().removeCard();
+            t.putFirst(selectedCard);
+            selectedCard = null;
+            System.out.println("No card is selected.");
+            
+            
+        }
+    }
 
         
         
