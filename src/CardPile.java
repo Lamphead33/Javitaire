@@ -25,10 +25,10 @@ class CardPile extends JComponent {
 	protected int _y = 0;
 	
 	// FUNCTIONAL BOOLEANS
-	private boolean isTableau;
-	private boolean isDeck;
-	private boolean isWaste;
-	private boolean isFoundation;
+	private boolean isTableau = false;
+	private boolean isDeck = false;
+	private boolean isWaste = false;
+	private boolean isFoundation = false;
 	
 	
 	public CardPile(boolean isDeck)
@@ -138,6 +138,16 @@ class CardPile extends JComponent {
 	public void putFirst(Card card) {
 		cardsInPile.add(0, card);
 	}
+	
+	public void addCard(Card c) {
+	    cardsInPile.add(c);
+	}
+	
+	public void removeCard() {
+	    if (!this.cardsInPile.isEmpty()) {
+	        cardsInPile.remove(0);
+	    }
+	}
 
 	
 	
@@ -147,10 +157,10 @@ class CardPile extends JComponent {
 	 *  to any problem, maybe ever
 	 */
 	public void setFoundation() {
-	    this.isFoundation = true;
+	    isFoundation = true;
 	}
 	public void setTableau() {
-	    this.isTableau = true;
+	    isTableau = true;
 	}
 	public void setDeck() {
 	    isDeck = true;

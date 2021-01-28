@@ -40,6 +40,8 @@ public class Board
 	private static CardPile[] playCardStack; // Tableau stacks
 	private static final Card newCardPlace = new Card();// waste card spot
 	private static CardPile deck; // populated with standard 52 card deck
+	private static boolean cardSelected; // tracks whether a card is currently selected
+	private static Game game;
 
 	// GUI COMPONENTS (top level)
 	private static final JFrame frame = new JFrame("Klondike Solitaire");
@@ -50,6 +52,7 @@ public class Board
 	static JMenu x;
 	static JMenuItem ng, vegas, rules;
 	private static JButton newGameButton = new JButton("New Game");
+	private static JButton testButton = new JButton("Krys's Mystery Button");
 	private static final Card newCardButton = new Card();// reveals waste card
 
 	// moves a card to abs location within a component
@@ -98,8 +101,26 @@ public class Board
 	}
 
 	private static void playNewGame() {
+	    game = new Game();
+	    
+	    
 		deck = new CardPile(true); // deal 52 cards
 		deck.shuffle();
+		deck.setDeck();
+		
+		// Initializes location as 'deck' for each card
+		for (Card c : deck.cardsInPile) {
+		    c.setCurrentPile(deck);
+		    c.addActionListener(new CardListener(c)); // ADDS LISTENER
+		    
+		    // Following removes all default button looking stuff
+		    c.setOpaque(false);
+		    c.setContentAreaFilled(false);
+		    c.setBorderPainted(false);
+		}
+
+        
+		
 		table.removeAll();
 		
 		// reset stacks if user starts a new game
@@ -119,6 +140,7 @@ public class Board
 		final_cards = new Foundation[NUM_FINAL_DECKS];
 		for (int x = 0; x < NUM_FINAL_DECKS; x++) {
 			final_cards[x] = new Foundation();
+			final_cards[x].setFoundation();
 
 			final_cards[x].setXY((FINAL_POS.x + (x * Card.CARD_WIDTH)) + 10, FINAL_POS.y); //setting location
 			table.add(final_cards[x]); //adding to board
@@ -131,6 +153,7 @@ public class Board
 		playCardStack = new CardPile[NUM_PLAY_DECKS];
 		for (int x = 0; x < NUM_PLAY_DECKS; x++) {
 			playCardStack[x] = new CardPile(false);
+			playCardStack[x].setTableau();
 			playCardStack[x].setXY((DECK_POS.x + (x * (Card.CARD_WIDTH + 10))), PLAY_POS.y);
 
 			table.add(playCardStack[x]);
@@ -141,18 +164,27 @@ public class Board
 			int hld = 0;
 			Card c = deck.pop().setFaceup();
 			playCardStack[x].putFirst(c);
+			c.setCurrentPile(playCardStack[x]);
 
 			for (int y = x + 1; y < NUM_PLAY_DECKS; y++)
 			{
 				playCardStack[y].putFirst(c = deck.pop());
 			}
 		}
+		
 
 		newGameButton.addActionListener(new NewGameListener());
 		newGameButton.setBounds(10, TABLE_HEIGHT - 100, 120, 30);
 		
 		table.add(newGameButton);
 		table.repaint();
+		
+		// TEST BUTTON
+		testButton.addActionListener(new TestListener());
+		testButton.setBounds(150, TABLE_HEIGHT - 100, 200, 30);
+		table.add(testButton);
+		table.repaint();
+		
 	}
 	
 	// BUTTON LISTENERS
@@ -164,4 +196,66 @@ public class Board
 		}
 
 	}
+	
+	private static class TestListener implements ActionListener {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        Card c = deck.pop().setFaceup();
+	        playCardStack[6].putFirst(c); 
+	        table.repaint();
+	    }
+	}
+	
+	private static class CardListener implements ActionListener {
+	    Card c;
+	    
+	    public CardListener(Card c) {
+	        this.c=c;
+	    }
+	    
+	    @Override
+	    public void actionPerformed(ActionEvent e) {  
+	        if (c.getFaceStatus()) {
+    	        if (game.selectedCard == null) {
+    	            game.selectedCard = c;
+    	        }
+    	        else if (game.selectedCard != null) {
+    	            game.moveCard(game.selectedCard, c.getCurrentPile());
+    	            table.repaint();
+    	        }
+	        }
+	        
+	        if (!c.getFaceStatus()) {
+	            c.setFaceup();
+	        }
+    	        
+	        
+	        
+	    }
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
