@@ -138,10 +138,12 @@ class CardPile extends JComponent {
 	
 	public void putFirst(Card card) {
 		cardsInPile.add(0, card);
+		card.setCurrentPile(this);
 	}
 	
 	public void addCard(Card c) {
 	    cardsInPile.add(c);
+	    c.setCurrentPile(this);
 	}
 	
 	public void removeCard() {

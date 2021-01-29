@@ -20,10 +20,11 @@ public class Game {
             if (c.getRank() == (t.getRank() - 1) && (c.getColour() != t.getColour())  ) {
                 
                 if (c == c.getCurrentPile().cardsInPile.get(0)) {
-                p.addCard(c);
-                c.getCurrentPile().removeCard();
-                selectedCard = null;
-                System.out.println("No card is selected.");
+                    c.getCurrentPile().removeCard();
+                    p.putFirst(c);
+                
+                    selectedCard = null;
+                    System.out.println("No card is selected.");
                 }
                 
                 else {
