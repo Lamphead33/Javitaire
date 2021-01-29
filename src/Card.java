@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-class Card extends JButton  {
+class Card extends JComponent  {
 
 	private Suit _suit;
 
@@ -249,16 +249,16 @@ class Card extends JButton  {
 		if (_faceup) {
 			switch (_suit) {
 			case HEARTS:
-				drawSuit(g2d, "Hearts", Color.RED);
+				drawSuit(g2d, "Hearts\u2665", Color.RED);
 				break;
 			case DIAMONDS:
-				drawSuit(g2d, "Diamonds", Color.RED);
+				drawSuit(g2d, "Diamonds\u2666", Color.RED);
 				break;
 			case SPADES:
-				drawSuit(g2d, "Spades", Color.BLACK);
+				drawSuit(g2d, "Spades\u2660", Color.BLACK);
 				break;
 			case CLUBS:
-				drawSuit(g2d, "Clubs", Color.BLACK);
+				drawSuit(g2d, "Clubs\u2663", Color.BLACK);
 				break;
 			}
 			

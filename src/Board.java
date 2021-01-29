@@ -116,12 +116,7 @@ public class Board
 		// Initializes location as 'deck' for each card
 		for (Card c : deck.cardsInPile) {
 		    c.setCurrentPile(deck);
-		    c.addActionListener(new CardListener(c)); // ADDS LISTENER
-		    
-		    // Following removes all default button looking stuff
-		    c.setOpaque(false);
-		    c.setContentAreaFilled(false);
-		    c.setBorderPainted(false);
+		    c.addMouseListener(new CardListener(c)); // ADDS LISTENER
 		}
 
         
@@ -153,7 +148,7 @@ public class Board
 		
 		//deck button to reveal waste card
 		table.add(moveCard(newCardButton, DECK_POS.x, DECK_POS.y));
-		newCardButton.addActionListener(new WasteListener());
+		newCardButton.addMouseListener(new WasteListener());
 		
 		// initialize & place play (tableau) decks/stacks
 		playCardStack = new CardPile[NUM_PLAY_DECKS];
@@ -217,9 +212,9 @@ public class Board
 	}
 	
 	//reveals waste card
-    private static class WasteListener implements ActionListener {
+    private static class WasteListener extends MouseAdapter {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void mouseClicked(MouseEvent e) {
             Card c = deck.pop().setFaceup();
             
             if (waste.cardsInPile.isEmpty()) {
@@ -242,7 +237,7 @@ public class Board
     }
 		
 	
-	private static class CardListener implements ActionListener {
+	private static class CardListener extends MouseAdapter {
 	    Card c;
 	    
 	    public CardListener(Card c) {
@@ -250,7 +245,7 @@ public class Board
 	    }
 	    
 	    @Override
-	    public void actionPerformed(ActionEvent e) {  
+	    public void mouseClicked(MouseEvent e) {  
 	        if (c.getFaceStatus()) {
     	        if (game.selectedCard == null) {
     	            game.selectedCard = c;
@@ -263,7 +258,7 @@ public class Board
     	        }
 	        }
 	        
-	        if (!c.getFaceStatus() && c == c.getCurrentPile().cardsInPile.get(0)) {
+	        if (!c.getFaceStatus()) {
 	            c.setFaceup();
 	            c.repaint();
 	            table.repaint();

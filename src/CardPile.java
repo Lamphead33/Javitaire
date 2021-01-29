@@ -149,6 +149,10 @@ class CardPile extends JComponent {
 	        cardsInPile.remove(0);
 	    }
 	}
+	
+	public Card getTopCard() {
+	    return this.cardsInPile.get(0);
+	}
 
 	
 	
