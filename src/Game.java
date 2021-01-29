@@ -58,35 +58,41 @@ public class Game {
                 System.out.println("No card is selected.");
             }
         }
+        
+        
+        else if (p.isFoundation()) {
+            if (c.getRank() == (t.getRank() + 1) && c.getSuit() == t.getSuit()) {
+                c.getCurrentPile().removeCard();
+                p.addCard(c);
+                c.setCurrentPile(p);
+                selectedCard = null;
+                System.out.println("No card is selected.");
+            }
+            else {
+                selectedCard = null;
+                System.out.println("No card is selected.");
+            }
+        }
+        
     }
     
     
     public void moveToFoundation(Card c, Foundation f) {
-        //if (f.cardsInPile.isEmpty()){
-            if (c != null && f.cardsInPile.isEmpty()) {
-                if (c.getRank() == 0) {
-                    f.addCard(c);
-                    c.getCurrentPile().removeCard();
-                    selectedCard = null;
-                    System.out.println("No card is selected.");
-                }
-                else {
-                    selectedCard = null;
-                    System.out.println("No card is selected.");
-                }
-            }
-            else if (c != null && !f.cardsInPile.isEmpty()) {
-                f.addCard(c);
-                c.getCurrentPile().removeCard();
-                selectedCard = null;
-                System.out.println("No card is selected.");
-            }
-                else {
-                    selectedCard = null;
-                    System.out.println("No card is selected.");
-                }
-            }
-        //}
+        
+        if (f.cardsInPile.isEmpty() && selectedCard != null && c.getRank() == 0) {
+        f.putFirst(selectedCard);
+        // c.getCurrentPile().cardsInPile.remove(0);
+        c.setCurrentPile(f);
+        selectedCard = null;
+        System.out.println("No card is selected");
+        }
+        
+        else {
+            selectedCard = null;
+            System.out.println("No card is selected");
+        }
+        
+    }
     
     
     public void moveToTableau(Card c, CardPile t) {

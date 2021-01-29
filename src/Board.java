@@ -258,7 +258,7 @@ public class Board
     	        }
 	        }
 	        
-	        if (!c.getFaceStatus()) {
+	        if (!c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0) {
 	            c.setFaceup();
 	            c.repaint();
 	            table.repaint();
