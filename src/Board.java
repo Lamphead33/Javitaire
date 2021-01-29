@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,6 +41,9 @@ public class Board
 	private static CardPile[] playCardStack; // Tableau stacks
 	private static final Card newCardPlace = new Card();// waste card spot
 	private static CardPile deck; // populated with standard 52 card deck
+	private static boolean cardSelected; // tracks whether a card is currently selected
+	private static Game game;
+	private static CardPile waste;
 
 	// GUI COMPONENTS (top level)
 	private static final JFrame frame = new JFrame("Klondike Solitaire");
@@ -50,6 +54,7 @@ public class Board
 	static JMenu x;
 	static JMenuItem ng, vegas, rules;
 	private static JButton newGameButton = new JButton("New Game");
+	private static JButton testButton = new JButton("Krys's Mystery Button");
 	private static final Card newCardButton = new Card();// reveals waste card
 
 	// moves a card to abs location within a component
@@ -98,8 +103,23 @@ public class Board
 	}
 
 	private static void playNewGame() {
+	    game = new Game();
+	    
+	    
 		deck = new CardPile(true); // deal 52 cards
-		//deck.shuffle(); shuffle function, logic not in yet.
+		deck.shuffle();
+		deck.setDeck();
+		
+		waste = new CardPile(false);
+		waste.setWaste();
+		
+		// Initializes location as 'deck' for each card
+		for (Card c : deck.cardsInPile) {
+		    c.setCurrentPile(deck);
+		    c.addMouseListener(new CardListener(c)); // ADDS LISTENER
+		}
+
+        
 		table.removeAll();
 		
 		// reset stacks if user starts a new game
@@ -119,6 +139,8 @@ public class Board
 		final_cards = new Foundation[NUM_FINAL_DECKS];
 		for (int x = 0; x < NUM_FINAL_DECKS; x++) {
 			final_cards[x] = new Foundation();
+			final_cards[x].setFoundation();
+			final_cards[x].addMouseListener(new FoundationListener(final_cards[x]));
 
 			final_cards[x].setXY((FINAL_POS.x + (x * Card.CARD_WIDTH)) + 10, FINAL_POS.y); //setting location
 			table.add(final_cards[x]); //adding to board
@@ -126,12 +148,17 @@ public class Board
 		
 		//deck button to reveal waste card
 		table.add(moveCard(newCardButton, DECK_POS.x, DECK_POS.y));
+		newCardButton.addMouseListener(new WasteListener());
 		
 		// initialize & place play (tableau) decks/stacks
 		playCardStack = new CardPile[NUM_PLAY_DECKS];
 		for (int x = 0; x < NUM_PLAY_DECKS; x++) {
 			playCardStack[x] = new CardPile(false);
+			playCardStack[x].setTableau();
 			playCardStack[x].setXY((DECK_POS.x + (x * (Card.CARD_WIDTH + 10))), PLAY_POS.y);
+			
+			// vvvv I don't think this is gonna work. Need another solution for Kings onto blank spaces
+			// playCardStack[x].addMouseListener(new TableauListener(playCardStack[x]));
 
 			table.add(playCardStack[x]);
 		}
@@ -141,18 +168,28 @@ public class Board
 			int hld = 0;
 			Card c = deck.pop().setFaceup();
 			playCardStack[x].putFirst(c);
+			c.setCurrentPile(playCardStack[x]);
 
 			for (int y = x + 1; y < NUM_PLAY_DECKS; y++)
 			{
 				playCardStack[y].putFirst(c = deck.pop());
 			}
 		}
+		
 
 		newGameButton.addActionListener(new NewGameListener());
 		newGameButton.setBounds(10, TABLE_HEIGHT - 100, 120, 30);
 		
 		table.add(newGameButton);
 		table.repaint();
+		
+		// TEST BUTTON
+		testButton.addActionListener(new TestListener());
+		testButton.setBounds(150, TABLE_HEIGHT - 100, 200, 30);
+		table.add(testButton);
+		table.repaint();
+		
+		
 	}
 	
 	// BUTTON LISTENERS
@@ -164,4 +201,115 @@ public class Board
 		}
 
 	}
+	
+	private static class TestListener implements ActionListener {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        Card c = deck.pop().setFaceup();
+	        playCardStack[6].putFirst(c); 
+	        table.repaint();
+	    }
+	}
+	
+	//reveals waste card
+    private static class WasteListener extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Card c = deck.pop().setFaceup();
+            
+            if (waste.cardsInPile.isEmpty()) {
+                table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
+                waste.addCard(c);
+                c.repaint();
+                table.repaint();
+            }
+            else {
+                Card t = waste.cardsInPile.get(0);
+                deck.add(t);
+                waste.cardsInPile.removeAll(waste.cardsInPile);
+                
+                table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
+                waste.addCard(c);
+                c.repaint();
+                table.repaint();
+            }
+        }
+    }
+		
+	
+	private static class CardListener extends MouseAdapter {
+	    Card c;
+	    
+	    public CardListener(Card c) {
+	        this.c=c;
+	    }
+	    
+	    @Override
+	    public void mouseClicked(MouseEvent e) {  
+	        if (c.getFaceStatus()) {
+    	        if (game.selectedCard == null) {
+    	            game.selectedCard = c;
+    	            System.out.println("A card is selected.");
+    	        }
+    	        else if (game.selectedCard != null) {
+    	            game.moveCard(game.selectedCard, c.getCurrentPile());
+    	            c.repaint();
+    	            table.repaint();
+    	        }
+	        }
+	        
+	        if (!c.getFaceStatus()) {
+	            c.setFaceup();
+	            c.repaint();
+	            table.repaint();
+	        }
+	    }
+	    
+	}
+	
+	   private static class FoundationListener extends MouseAdapter {
+	       Foundation f;
+	       
+	       public FoundationListener(Foundation f) {
+	           this.f = f;
+	       }
+	       
+	       @Override
+	       public void mouseClicked(MouseEvent e) {
+	           
+	           game.moveToFoundation(game.selectedCard, f);
+	           
+	           table.repaint();
+	           
+	       }
+	    
+	}
+	   
+	   
+	   private static class TableauListener extends MouseAdapter {
+	       CardPile t;
+	       
+	       public TableauListener(CardPile t) {
+	           this.t = t;
+	       }
+	       
+	       @Override
+	       public void mouseClicked(MouseEvent e) {
+	           if (game.selectedCard != null) {
+	               game.moveToTableau(game.selectedCard, t);
+	               table.repaint();
+	           }
+	           else {
+	               
+	           }
+	       }
+	   }
+	
+	   
+	   
+	   
+	   
+	   
+	   
+	   
 }

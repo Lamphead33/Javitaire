@@ -4,14 +4,19 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
+import java.util.UUID;
 
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-class Card extends JPanel {
+class Card extends JComponent  {
 
 	private Suit _suit;
 
 	private Value _value;
+	
+	private int rank; // 0-12, to compare against other cards on movement checks
 
 	private Boolean _faceup;
 
@@ -19,6 +24,14 @@ class Card extends JPanel {
 
 	private Point whereAmI; // used to create abs postion rectangle for contains
 	// functions
+	
+	private CardPile currentPile;
+	
+	private String colour;
+	
+	private boolean isSelected = false;
+	
+	UUID uuid;
 
 	private int x; // used for relative positioning within CardPile Container
 	private int y;
@@ -44,6 +57,13 @@ class Card extends JPanel {
 		_location.x = x;
 		_location.y = y;
 		whereAmI = new Point();
+		
+		if (this._suit == Suit.HEARTS || this._suit == Suit.DIAMONDS) {
+		    this.colour = "Red";
+		}
+		else {
+		    this.colour = "Black";
+		}
 	}
 
 	Card()
@@ -140,11 +160,35 @@ class Card extends JPanel {
 	public Boolean getFaceStatus() {
 		return _faceup;
 	}
+	
+	public int getRank() {
+	    return rank;
+	}
+	
+	public String getColour() {
+	    return colour;
+	}
+	
+	public CardPile getCurrentPile() {
+	    return currentPile;
+	}
+	
+	public void setCurrentPile(CardPile c) {
+	    currentPile = c;
+	}
+	
+	public void setRank(int rank) {
+	    this.rank = rank;
+	}
 
 	public void setXY(Point p) {
 		x = p.x;
 		y = p.y;
 
+	}
+	
+	public UUID getUUID() {
+	    return uuid;
 	}
 
 	public void setSuit(Suit suit) {
@@ -163,6 +207,14 @@ class Card extends JPanel {
 	public Card setFacedown() {
 		_faceup = false;
 		return this;
+	}
+	
+	public void setSelected() {
+	    this.isSelected = true;
+	}
+	
+	public void deselect() {
+	    this.isSelected = false;
 	}
 
 	@Override
@@ -187,29 +239,30 @@ class Card extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		RoundRectangle2D rect2 = new RoundRectangle2D.Double(_location.x, _location.y, CARD_WIDTH, CARD_HEIGHT,
 				CORNER_ANGLE, CORNER_ANGLE);
-		g2d.setColor(Color.WHITE);
-		g2d.fill(rect2);
-		g2d.setColor(Color.black);
-		g2d.draw(rect2);
-		
+
+		    g2d.setColor(Color.WHITE);
+            g2d.fill(rect2);
+            g2d.setColor(Color.black);
+            g2d.draw(rect2);  
+
 		//If faceup, draw the card. 
 		if (_faceup) {
 			switch (_suit) {
 			case HEARTS:
-				drawSuit(g2d, "Hearts", Color.RED);
+				drawSuit(g2d, "Hearts\u2665", Color.RED);
 				break;
 			case DIAMONDS:
-				drawSuit(g2d, "Diamonds", Color.RED);
+				drawSuit(g2d, "Diamonds\u2666", Color.RED);
 				break;
 			case SPADES:
-				drawSuit(g2d, "Spades", Color.BLACK);
+				drawSuit(g2d, "Spades\u2660", Color.BLACK);
 				break;
 			case CLUBS:
-				drawSuit(g2d, "Clubs", Color.BLACK);
+				drawSuit(g2d, "Clubs\u2663", Color.BLACK);
 				break;
 			}
 			
-			//int new_x_offset = x_offset + (CARD_WIDTH - 30);
+			//int new_x_offset = x_offset + (CARD_WIDTH - 30);          
 			
 			switch (_value) {
 			case ACE:
@@ -253,13 +306,13 @@ class Card extends JPanel {
 				break;
 			}
 		} else {
-			// DRAW THE BACK OF THE CARD IF FACEDOWN
-			RoundRectangle2D rect = new RoundRectangle2D.Double(_location.x, _location.y, CARD_WIDTH, CARD_HEIGHT,
-					CORNER_ANGLE, CORNER_ANGLE);
-			g2d.setColor(Color.LIGHT_GRAY);
-			g2d.fill(rect);
-			g2d.setColor(Color.black);
-			g2d.draw(rect);
+		        RoundRectangle2D rect = new RoundRectangle2D.Double(_location.x, _location.y, CARD_WIDTH, CARD_HEIGHT,
+                        CORNER_ANGLE, CORNER_ANGLE);
+                g2d.setColor(Color.LIGHT_GRAY);
+                g2d.fill(rect);
+                g2d.setColor(Color.black);
+                g2d.draw(rect);
+
 		}
 	}
 }
