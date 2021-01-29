@@ -78,20 +78,17 @@ public class Game {
     
     
     public void moveToFoundation(Card c, Foundation f) {
-        
         if (f.cardsInPile.isEmpty() && selectedCard != null && c.getRank() == 0) {
+        c.getCurrentPile().removeCard();
         f.putFirst(selectedCard);
         // c.getCurrentPile().cardsInPile.remove(0);
         c.setCurrentPile(f);
         selectedCard = null;
         System.out.println("No card is selected");
-        }
-        
-        else {
+        } else {
             selectedCard = null;
             System.out.println("No card is selected");
         }
-        
     }
     
     
@@ -102,13 +99,8 @@ public class Game {
             selectedCard = null;
             System.out.println("No card is selected.");
             
-            
         }
-    }
-
-        
-        
-        
-    }
+    } 
+}
 
 
