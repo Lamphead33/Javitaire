@@ -77,6 +77,9 @@ public class Game {
     }
     
     
+
+    
+    
     public void moveToFoundation(Card c, Foundation f) {
         if (f.cardsInPile.isEmpty() && selectedCard != null && c.getRank() == 0) {
         c.getCurrentPile().removeCard();

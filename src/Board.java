@@ -215,27 +215,37 @@ public class Board
     private static class WasteListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            Card c = deck.pop().setFaceup();
-            
-            if (waste.cardsInPile.isEmpty()) {
-                table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
-                waste.addCard(c);
-                c.repaint();
-                table.repaint();
+            Card c = deck.popFirst();
+
+            if (!waste.cardsInPile.isEmpty()) {
+                    Card t = waste.cardsInPile.get(0);
+                    deck.putFirst(t);
+                    t.setCurrentPile(deck);
+                    t.setFaceup();
+                    c.repaint();
+                    table.repaint();
+                    waste.removeCard();
+                    
             }
-            else {
-                Card t = waste.cardsInPile.get(0);
-                deck.add(t);
-                waste.cardsInPile.removeAll(waste.cardsInPile);
-                
-                table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
-                waste.addCard(c);
-                c.repaint();
-                table.repaint();
-            }
+                    
+                    table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
+                    c.setFaceup();
+                    waste.putFirst(c);
+                    c.setCurrentPile(waste);
+                    c.repaint();
+                    table.repaint();
+
+                    System.out.println("Number of cards in deck: " + deck.cardsInPile.size());
+                                      
+                    
+                    
+                    
         }
+
     }
 		
+    
+    
 	
 	private static class CardListener extends MouseAdapter {
 	    Card c;
