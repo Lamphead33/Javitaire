@@ -76,10 +76,6 @@ public class Game {
         
     }
     
-    
-
-    
-    
     public void moveToFoundation(Card c, Foundation f) {
         if (f.cardsInPile.isEmpty() && selectedCard != null && c.getRank() == 0) {
         c.getCurrentPile().removeCard();
@@ -101,8 +97,20 @@ public class Game {
             t.putFirst(selectedCard);
             selectedCard = null;
             System.out.println("No card is selected.");
-            
+        } 
+        // 1st poor attempt at logic to move tableau cards if Kings. 
+        if (c.getValue() == Value.KING) {
+        	c.setXY(t.getXY());
+        	c.getCurrentPile().removeCard();
+        	t.putFirst(selectedCard);
         }
+        
+        /* 2nd poor attempt at logic to move tableau cards if Kings. Don't think they recognize where to go without a cardPile
+        if (c.getValue() == Value.KING) {
+        	c.getCurrentPile().removeCard();
+        	t.putFirst(selectedCard);
+        	selectedCard = null;
+        } */
     } 
 }
 

@@ -27,14 +27,15 @@ import javax.swing.JTextField;
 public class Board
 {
 	// CONSTANTS
-	public static final int TABLE_HEIGHT = Card.CARD_HEIGHT * 4;
-	public static final int TABLE_WIDTH = (Card.CARD_WIDTH * 7) + 100;
-	public static final int NUM_FINAL_DECKS = 4;
-	public static final int NUM_PLAY_DECKS = 7;
-	public static final Point DECK_POS = new Point(5, 5);
-	public static final Point SHOW_POS = new Point(DECK_POS.x + Card.CARD_WIDTH + 5, DECK_POS.y);
-	public static final Point FINAL_POS = new Point(SHOW_POS.x + Card.CARD_WIDTH + 150, DECK_POS.y);
-	public static final Point PLAY_POS = new Point(DECK_POS.x, FINAL_POS.y + Card.CARD_HEIGHT + 30);
+	public static final int TABLE_HEIGHT = Card.CARD_HEIGHT * 4; //height of board overall
+	public static final int TABLE_WIDTH = (Card.CARD_WIDTH * 7) + 100; //width of board overall
+	public static final int NUM_FINAL_DECKS = 4; //foundation decks
+	public static final int NUM_PLAY_DECKS = 7; //tableau decks
+	
+	public static final Point DECK_POS = new Point(5, 5); //board position of the initial playing deck
+	public static final Point SHOW_POS = new Point(DECK_POS.x + Card.CARD_WIDTH + 5, DECK_POS.y); //board position of the waste card deck
+	public static final Point FINAL_POS = new Point(SHOW_POS.x + Card.CARD_WIDTH + 150, DECK_POS.y); //board position of the tableau deck's bottom card
+	public static final Point PLAY_POS = new Point(DECK_POS.x, FINAL_POS.y + Card.CARD_HEIGHT + 30); //board position of the tableau decks top card
 
 	// GAMEPLAY STRUCTURES
 	private static Foundation[] final_cards;// Foundation Stacks
@@ -42,19 +43,19 @@ public class Board
 	private static final Card newCardPlace = new Card();// waste card spot
 	private static CardPile deck; // populated with standard 52 card deck
 	private static boolean cardSelected; // tracks whether a card is currently selected
-	private static Game game;
-	private static CardPile waste;
+	private static Game game; 
+	private static CardPile waste; //waste Pile
 
 	// GUI COMPONENTS (top level)
-	private static final JFrame frame = new JFrame("Klondike Solitaire");
+	private static final JFrame frame = new JFrame("Javitaire");
 	protected static final JPanel table = new JPanel();
 	
 	//MENU COMPONENTS
 	static JMenuBar mb;
 	static JMenu x;
 	static JMenuItem ng, vegas, rules;
-	private static JButton newGameButton = new JButton("New Game");
-	private static JButton testButton = new JButton("Krys's Mystery Button");
+	private static JButton newGameButton = new JButton("New Game"); //Starts new game, which also shuffles deck & resets dealt cards
+	private static JButton scoreButton = new JButton("Toggle Score"); //PLACEHOLDER . . . will toggle a score off/on
 	private static final Card newCardButton = new Card();// reveals waste card
 
 	// moves a card to abs location within a component
@@ -110,7 +111,7 @@ public class Board
 		deck.shuffle();
 		deck.setDeck();
 		
-		waste = new CardPile(false);
+		waste = new CardPile(false); //sets an empty CardPile where waste will go
 		waste.setWaste();
 		
 		// Initializes location as 'deck' for each card
@@ -123,14 +124,11 @@ public class Board
 		table.removeAll();
 		
 		// reset stacks if user starts a new game
-		if (playCardStack != null && final_cards != null) //if game in progress
-		{
-			for (int x = 0; x < NUM_PLAY_DECKS; x++)
-			{
+		if (playCardStack != null && final_cards != null) { //if game in progress
+			for (int x = 0; x < NUM_PLAY_DECKS; x++) {
 				playCardStack[x].makeEmpty(); //reset
 			}
-			for (int x = 0; x < NUM_FINAL_DECKS; x++)
-			{
+			for (int x = 0; x < NUM_FINAL_DECKS; x++) {
 				final_cards[x].makeEmpty(); //reset
 			}
 		}
@@ -155,7 +153,7 @@ public class Board
 		for (int x = 0; x < NUM_PLAY_DECKS; x++) {
 			playCardStack[x] = new CardPile(false);
 			playCardStack[x].setTableau();
-			playCardStack[x].setXY((DECK_POS.x + (x * (Card.CARD_WIDTH + 10))), PLAY_POS.y);
+			playCardStack[x].setXY((DECK_POS.x + (x * (Card.CARD_WIDTH + 10))), PLAY_POS.y); //positioning on the board
 			
 			// vvvv I don't think this is gonna work. Need another solution for Kings onto blank spaces
 			// playCardStack[x].addMouseListener(new TableauListener(playCardStack[x]));
@@ -170,36 +168,30 @@ public class Board
 			playCardStack[x].putFirst(c);
 			c.setCurrentPile(playCardStack[x]);
 
-			for (int y = x + 1; y < NUM_PLAY_DECKS; y++)
-			{
+			for (int y = x + 1; y < NUM_PLAY_DECKS; y++) {
 				playCardStack[y].putFirst(c = deck.pop());
 			}
 		}
-		
 
-		newGameButton.addActionListener(new NewGameListener());
-		newGameButton.setBounds(10, TABLE_HEIGHT - 100, 120, 30);
+		newGameButton.addActionListener(new NewGameListener()); 
+		newGameButton.setBounds(10, TABLE_HEIGHT - 100, 120, 30); //setting button bounds
 		
-		table.add(newGameButton);
+		table.add(newGameButton); //putting button on table
 		table.repaint();
 		
-		// TEST BUTTON
-		testButton.addActionListener(new TestListener());
-		testButton.setBounds(150, TABLE_HEIGHT - 100, 200, 30);
-		table.add(testButton);
+		// TEST BUTTONS
+		scoreButton.addActionListener(new TestListener());
+		scoreButton.setBounds(150, TABLE_HEIGHT - 100, 200, 30); //setting button bounds
+		table.add(scoreButton); //putting button on table
 		table.repaint();
-		
-		
 	}
 	
 	// BUTTON LISTENERS
 	private static class NewGameListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
+		public void actionPerformed(ActionEvent e) {
 			playNewGame();
 		}
-
 	}
 	
 	private static class TestListener implements ActionListener {
@@ -215,37 +207,38 @@ public class Board
     private static class WasteListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            Card c = deck.popFirst();
+        	//on mouse click, peek top card & set face UP
+        	Card c = deck.cardsInPile.get(0);
 
+        	//if the waste pile is NOT empty:
             if (!waste.cardsInPile.isEmpty()) {
-                    Card t = waste.cardsInPile.get(0);
-                    deck.putFirst(t);
-                    t.setCurrentPile(deck);
-                    t.setFaceup();
-                    c.repaint();
-                    table.repaint();
-                    waste.removeCard();
-                    
-            }
-                    
-                    table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
-                    c.setFaceup();
-                    waste.putFirst(c);
-                    c.setCurrentPile(waste);
-                    c.repaint();
-                    table.repaint();
-
-                    System.out.println("Number of cards in deck: " + deck.cardsInPile.size());
-                                      
-                    
-                    
-                    
-        }
-
+            	Card t = waste.cardsInPile.get(0); //Card t is the card on the waste pile at Index 0 (should be the only card there)
+                t.setCurrentPile(deck);
+                t.setFaceup(); //sets waste card faceup
+                t.repaint(); //redundant? shouldn't need to repaint as c flipped, only card t
+                table.repaint(); //repaints table to show flipped card
+                //waste.removeCard(); //not sure what this is doing here?
+                
+            } 
+            //if the waste pile is NOT empty
+            	table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
+                c.setFacedown();
+                waste.putFirst(c);
+                c.setCurrentPile(waste);
+                c.repaint();
+                table.repaint();
+            
+	            System.out.println("Number of cards in deck: " + deck.cardsInPile.size()); //printing to verify # of cards in play Deck as game progresses                         
+	        } /* KRYS I ADDED THIS BUT IT CURRENTLY DOES **NOTHING**. ENJOY :D
+        public void mouseReleased(MouseEvent e) {
+        	if (!waste.cardsInPile.isEmpty()) {
+        		Card t = waste.cardsInPile.get(0);
+        		deck.add(t);
+        		t.repaint();
+        		table.repaint();
+        	}
+        } */
     }
-		
-    
-    
 	
 	private static class CardListener extends MouseAdapter {
 	    Card c;
@@ -259,9 +252,9 @@ public class Board
 	        if (c.getFaceStatus()) {
     	        if (game.selectedCard == null) {
     	            game.selectedCard = c;
-    	            System.out.println("A card is selected.");
-    	        }
-    	        else if (game.selectedCard != null) {
+    	            
+    	            System.out.println("A card is selected."); //printing to track if card is selected or not
+    	        } else if (game.selectedCard != null) {
     	            game.moveCard(game.selectedCard, c.getCurrentPile());
     	            c.repaint();
     	            table.repaint();
@@ -288,13 +281,9 @@ public class Board
 	       public void mouseClicked(MouseEvent e) {
 	           
 	           game.moveToFoundation(game.selectedCard, f);
-	           
 	           table.repaint();
-	           
 	       }
-	    
 	}
-	   
 	   
 	   private static class TableauListener extends MouseAdapter {
 	       CardPile t;
@@ -308,18 +297,7 @@ public class Board
 	           if (game.selectedCard != null) {
 	               game.moveToTableau(game.selectedCard, t);
 	               table.repaint();
-	           }
-	           else {
-	               
-	           }
+	           } 
 	       }
-	   }
-	
-	   
-	   
-	   
-	   
-	   
-	   
-	   
+	   }   
 }

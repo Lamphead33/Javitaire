@@ -189,12 +189,6 @@ class CardPile extends JComponent {
 	    return isWaste;
 	}
 
-	
-	
-	
-	
-	
-	
 	/*
 	@Override
 	public boolean contains(Point p) {
