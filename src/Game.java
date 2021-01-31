@@ -12,21 +12,20 @@ public class Game {
         // Tableau logic
         if (p.isTableau()) {
             
-
-            if (t.getCurrentPile().isWaste()) {
-                System.out.println(":(");
-            }
+            
             
             if (c.getRank() == (t.getRank() - 1) && (c.getColour() != t.getColour())  ) {
                 
                 if (c == c.getCurrentPile().cardsInPile.get(0)) {
                     c.getCurrentPile().removeCard();
                     p.putFirst(c);
-                
+                    
                     selectedCard = null;
                     System.out.println("No card is selected.");
                 }
+
                 
+                /*
                 else {
                     //Logic to move a whole stack if necessary
                     for (int i = 0; i == c.getCurrentPile().cardsInPile.indexOf(c); i++) {
@@ -49,7 +48,7 @@ public class Game {
                     floatingCards.removeAll(floatingCards);
                     selectedCard = null;
                     System.out.println("No card is selected.");
-                }
+                } */
                 
             }
             
@@ -91,19 +90,21 @@ public class Game {
     }
     
     
-    public void moveToTableau(Card c, CardPile t) {
-        if (t.cardsInPile.isEmpty() && c.getRank() == 13) {
+    public void moveKing(Card c, CardPile t) {
+        if (c.getValue() == Value.KING) {
             c.getCurrentPile().removeCard();
             t.putFirst(selectedCard);
             selectedCard = null;
             System.out.println("No card is selected.");
         } 
         // 1st poor attempt at logic to move tableau cards if Kings. 
+        /*
         if (c.getValue() == Value.KING) {
         	c.setXY(t.getXY());
         	c.getCurrentPile().removeCard();
         	t.putFirst(selectedCard);
         }
+        */
         
         /* 2nd poor attempt at logic to move tableau cards if Kings. Don't think they recognize where to go without a cardPile
         if (c.getValue() == Value.KING) {

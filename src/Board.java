@@ -45,6 +45,7 @@ public class Board
 	private static boolean cardSelected; // tracks whether a card is currently selected
 	private static Game game; 
 	private static CardPile waste; //waste Pile
+	private static final Board board = new Board();
 
 	// GUI COMPONENTS (top level)
 	private static final JFrame frame = new JFrame("Javitaire");
@@ -155,7 +156,7 @@ public class Board
 			playCardStack[x].setTableau();
 			playCardStack[x].setXY((DECK_POS.x + (x * (Card.CARD_WIDTH + 10))), PLAY_POS.y); //positioning on the board
 			
-			// vvvv I don't think this is gonna work. Need another solution for Kings onto blank spaces
+			// attempting a listener for kings - prevents clicking of cards in any stack >:(
 			// playCardStack[x].addMouseListener(new TableauListener(playCardStack[x]));
 
 			table.add(playCardStack[x]);
@@ -256,15 +257,29 @@ public class Board
     	            System.out.println("A card is selected."); //printing to track if card is selected or not
     	        } else if (game.selectedCard != null) {
     	            game.moveCard(game.selectedCard, c.getCurrentPile());
+    	            
+    	            for (int i = 0; i < NUM_PLAY_DECKS; i++) {
+    	                if (playCardStack[i].cardsInPile.isEmpty()) {
+    	                    playCardStack[i].addMouseListener(new TableauListener(playCardStack[i]));
+    	                }
+    	            }
+    	            
     	            c.repaint();
     	            table.repaint();
     	        }
 	        }
 	        
 	        if (!c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0) {
-	            c.setFaceup();
-	            c.repaint();
-	            table.repaint();
+	            if (game.selectedCard == null) {
+    	            c.setFaceup();
+    	            c.repaint();
+    	            table.repaint();
+	            }
+	            else if (game.selectedCard.getValue() == Value.KING) {
+	                game.moveKing(game.selectedCard, c.getCurrentPile());
+	                c.repaint();
+	                table.repaint();
+	            }
 	        }
 	    }
 	    
@@ -295,7 +310,8 @@ public class Board
 	       @Override
 	       public void mouseClicked(MouseEvent e) {
 	           if (game.selectedCard != null) {
-	               game.moveToTableau(game.selectedCard, t);
+	               game.moveKing(game.selectedCard, t);
+	               t.repaint();
 	               table.repaint();
 	           } 
 	       }
