@@ -94,6 +94,7 @@ public class Game {
         if (c.getValue() == Value.KING) {
             c.getCurrentPile().removeCard();
             t.putFirst(selectedCard);
+            selectedCard.setCurrentPile(t);
             selectedCard = null;
             System.out.println("No card is selected.");
         } 

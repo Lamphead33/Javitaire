@@ -46,6 +46,7 @@ public class Board
 	private static Game game; 
 	private static CardPile waste; //waste Pile
 	private static final Board board = new Board();
+	private static MouseListener wasteListener;
 
 	// GUI COMPONENTS (top level)
 	private static final JFrame frame = new JFrame("Javitaire");
@@ -57,7 +58,9 @@ public class Board
 	static JMenuItem ng, vegas, rules;
 	private static JButton newGameButton = new JButton("New Game"); //Starts new game, which also shuffles deck & resets dealt cards
 	private static JButton scoreButton = new JButton("Toggle Score"); //PLACEHOLDER . . . will toggle a score off/on
-	private static final Card newCardButton = new Card();// reveals waste card
+	
+	
+	private static Card newCardButton;// reveals waste card
 
 	// moves a card to abs location within a component
 	protected static Card moveCard(Card c, int x, int y) {
@@ -111,9 +114,11 @@ public class Board
 		deck = new CardPile(true); // deal 52 cards
 		deck.shuffle();
 		deck.setDeck();
+		newCardButton = deck.cardsInPile.get(0);
 		
 		waste = new CardPile(false); //sets an empty CardPile where waste will go
 		waste.setWaste();
+		wasteListener = new WasteListener();
 		
 		// Initializes location as 'deck' for each card
 		for (Card c : deck.cardsInPile) {
@@ -147,7 +152,7 @@ public class Board
 		
 		//deck button to reveal waste card
 		table.add(moveCard(newCardButton, DECK_POS.x, DECK_POS.y));
-		newCardButton.addMouseListener(new WasteListener());
+		newCardButton.addMouseListener(wasteListener);
 		
 		// initialize & place play (tableau) decks/stacks
 		playCardStack = new CardPile[NUM_PLAY_DECKS];
@@ -208,37 +213,31 @@ public class Board
     private static class WasteListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-        	//on mouse click, peek top card & set face UP
-        	Card c = deck.cardsInPile.get(0);
-
-        	//if the waste pile is NOT empty:
-            if (!waste.cardsInPile.isEmpty()) {
-            	Card t = waste.cardsInPile.get(0); //Card t is the card on the waste pile at Index 0 (should be the only card there)
-                t.setCurrentPile(deck);
-                t.setFaceup(); //sets waste card faceup
-                t.repaint(); //redundant? shouldn't need to repaint as c flipped, only card t
-                table.repaint(); //repaints table to show flipped card
-                //waste.removeCard(); //not sure what this is doing here?
-                
-            } 
-            //if the waste pile is NOT empty
-            	table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y));
-                c.setFacedown();
-                waste.putFirst(c);
-                c.setCurrentPile(waste);
-                c.repaint();
-                table.repaint();
             
-	            System.out.println("Number of cards in deck: " + deck.cardsInPile.size()); //printing to verify # of cards in play Deck as game progresses                         
-	        } /* KRYS I ADDED THIS BUT IT CURRENTLY DOES **NOTHING**. ENJOY :D
-        public void mouseReleased(MouseEvent e) {
-        	if (!waste.cardsInPile.isEmpty()) {
-        		Card t = waste.cardsInPile.get(0);
-        		deck.add(t);
-        		t.repaint();
-        		table.repaint();
-        	}
-        } */
+            Card c = deck.popFirst();
+            
+            if (!waste.cardsInPile.isEmpty()) { // If there is a card in the waste
+                Card t = waste.cardsInPile.get(0); // Card t is the card in the waste (to be moved to deck)
+                t.setCurrentPile(deck); // Set t location as deck
+                t.setFacedown(); // Flip it face down
+                table.remove(t);
+                deck.addCard(t); // Puts cars on bottom of deck
+                waste.removeCard(); // Clears duplicate from waste
+                waste.repaint();
+            }
+            
+            // Following code executes regardless of whether a card was in the waste or not
+            table.add(Board.moveCard(c, SHOW_POS.x, SHOW_POS.y)); // Prints waste card to waste
+            c.setFaceup(); // Set card face up
+            waste.addCard(c); // Add it to the waste
+            c.setCurrentPile(waste); // Set current loc to waste
+            c.removeMouseListener(wasteListener); // Removes listener from the card that is in the waste
+            c.repaint();
+            
+            newCardButton = deck.getTopCard(); // Sets active wastelistener card to top of deck
+            table.add(moveCard(newCardButton, DECK_POS.x, DECK_POS.y)); // Sets new card button to deck loc
+            newCardButton.addMouseListener(wasteListener); // adds listener
+            table.repaint();}
     }
 	
 	private static class CardListener extends MouseAdapter {
