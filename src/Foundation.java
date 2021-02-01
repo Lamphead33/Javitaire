@@ -5,8 +5,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 
-import javax.swing.JButton;
-
 /*
  * Foundation 
  */
