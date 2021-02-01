@@ -13,7 +13,6 @@ import javax.swing.JButton;
 
 class Foundation extends CardPile {
     Foundation found = this;
-    Clicker c;
 
 	//
 	private static final long serialVersionUID = 4962548240071318600L;
@@ -36,22 +35,6 @@ class Foundation extends CardPile {
 		Rectangle rect = new Rectangle(_x, _y, Card.CARD_WIDTH + 10, Card.CARD_HEIGHT + 10);
 		return (rect.contains(p));
 	} 
-	
-	public class Clicker extends JButton {
-	    Foundation f;
-	    public Clicker(Foundation f) {
-	        this.f = f;
-	    }
-	}
-	
-	public void createClicker() {
-	    Clicker c = new Clicker(found);
-	}
-	
-	public Clicker getClicker() {
-	    return this.c;
-	}
-	
 
 	/*
 	 * This draws the "ace" stacks, where the foundation decks go
@@ -72,4 +55,32 @@ class Foundation extends CardPile {
 			g2d.draw(rect);
 		}
 	}
+	
+	
+	
+	
+	
+	/*
+	 * Not sure what this is so I'm gonna leave it just in case
+	 * 
+	  
+	  Clicker c;
+	  
+	   public class Clicker extends JButton {
+        Foundation f;
+        public Clicker(Foundation f) {
+            this.f = f;
+        }
+    }
+    
+    public void createClicker() {
+        Clicker c = new Clicker(found);
+    }
+    
+    public Clicker getClicker() {
+        return this.c;
+    }
+	 
+	 *
+	 */
 }
