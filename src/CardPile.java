@@ -1,17 +1,16 @@
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import javax.swing.JComponent;
 
 /* This is GUI component with a embedded
  * data structure. This structure is a mixture
  * of a queue and a stack
  */
+@SuppressWarnings("serial")
 class CardPile extends JComponent {
 	
 	//DECK VARIABLES

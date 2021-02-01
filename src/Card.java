@@ -5,43 +5,31 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 import java.util.UUID;
-
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
+
+@SuppressWarnings("serial")
 class Card extends JComponent  {
 
+    // Variable declarations
 	private Suit _suit;
-
 	private Value _value;
-	
 	private int rank; // 0-12, to compare against other cards on movement checks
-
 	private Boolean _faceup;
-
 	private Point _location; // location relative to container
-
 	private Point whereAmI; // used to create abs postion rectangle for contains
-	// functions
-	
 	private CardPile currentPile;
-	
 	private String colour;
-	
-	private boolean isSelected = false;
-	
 	UUID uuid;
-
 	private int x; // used for relative positioning within CardPile Container
 	private int y;
 
-	//these are for the alignment of the text on the drawn cards. can remove if we switch to images
+	// Aligns text onto drawn cards
 	private final int x_offset = 10;
 	private final int y_offset = 20;
 	private final int new_x_offset = x_offset + (CARD_WIDTH - 30); //distance between Suit & Rank
 	
-	//pretty self explanatory, height/width/corner angles of the cards
+	// Physical card dimensions
 	final static public int CARD_HEIGHT = 150;
 	final static public int CARD_WIDTH = 100;
 	final static public int CORNER_ANGLE = 20;
@@ -57,7 +45,6 @@ class Card extends JComponent  {
 		_location.x = x;
 		_location.y = y;
 		whereAmI = new Point();
-		
 		if (this._suit == Suit.HEARTS || this._suit == Suit.DIAMONDS) {
 		    this.colour = "Red";
 		}
@@ -65,7 +52,7 @@ class Card extends JComponent  {
 		    this.colour = "Black";
 		}
 	}
-
+	
 	Card()
 	{
 		_suit = Suit.CLUBS;
@@ -79,7 +66,7 @@ class Card extends JComponent  {
 		whereAmI = new Point();
 	}
 
-	//getting card suit from the enum
+	// Pulls suit from enum
 	public Suit getSuit() {
 		switch (_suit)
 		{
@@ -208,14 +195,6 @@ class Card extends JComponent  {
 		_faceup = false;
 		return this;
 	}
-	
-	public void setSelected() {
-	    this.isSelected = true;
-	}
-	
-	public void deselect() {
-	    this.isSelected = false;
-	}
 
 	@Override
 	public boolean contains(Point p) {
@@ -245,7 +224,7 @@ class Card extends JComponent  {
             g2d.setColor(Color.black);
             g2d.draw(rect2);  
 
-		//If faceup, draw the card. 
+		//If face up, draw the card. 
 		if (_faceup) {
 			switch (_suit) {
 			case HEARTS:
@@ -261,9 +240,7 @@ class Card extends JComponent  {
 				drawSuit(g2d, "Clubs\u2663", Color.BLACK);
 				break;
 			}
-			
-			//int new_x_offset = x_offset + (CARD_WIDTH - 30);          
-			
+			       
 			switch (_value) {
 			case ACE:
 				drawValue(g2d, "A");
