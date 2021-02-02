@@ -285,7 +285,7 @@ class Card extends JComponent  {
 		} else {
 		        RoundRectangle2D rect = new RoundRectangle2D.Double(_location.x, _location.y, CARD_WIDTH, CARD_HEIGHT,
                         CORNER_ANGLE, CORNER_ANGLE);
-                g2d.setColor(Color.LIGHT_GRAY);
+                g2d.setColor(new Color(160,87,168));
                 g2d.fill(rect);
                 g2d.setColor(Color.black);
                 g2d.draw(rect);
