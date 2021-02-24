@@ -148,7 +148,11 @@ public class Game {
                         return x;
                         
                     }
+                    
                 });
+                selectedCard = null;
+                setStatus("No card is selected.");
+                
                 /* OLD CODE
                 c.getCurrentPile().removeCard();
                 t.putFirst(selectedCard);

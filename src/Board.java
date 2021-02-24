@@ -298,8 +298,16 @@ public class Board
 	           if (game.selectedCard != null) {
 	               game.moveKing(game.selectedCard, t);
 	               statusDisplay.setText(game.getStatus());
+
+	               
+	               for (MouseListener ml : t.getMouseListeners()) {
+	                   t.removeMouseListener(ml);
+	               }
+	               
 	               t.repaint();
 	               table.repaint();
+	               
+	               
 	           } 
 	       }
 	   }   
