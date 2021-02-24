@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Comparator;
 
 
@@ -39,8 +40,17 @@ public class Game {
                             }
                             
                             // Sort to correct order
-                            p.cardsInPile.sort(Comparator.comparingInt(Card::getRank));
-                                
+                            Collections.sort(p.cardsInPile, new Comparator<Card>() {
+                                @Override
+                                public int compare(final Card card1, final Card card2) {
+                                    int x = 100;
+                                    if (card1.getFaceStatus() && card2.getFaceStatus()) {
+                                        return Integer.compare(card1.getRank(), card2.getRank());
+                                    }
+                                    return x;
+                                    
+                                }
+                            });
                             
                             
                             
