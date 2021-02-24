@@ -114,11 +114,49 @@ public class Game {
     public void moveKing(Card c, CardPile t) {
         try {
             if (c.getValue() == Value.KING) {
+                
+                if (c == c.getCurrentPile().cardsInPile.get(0)) {
+                    c.getCurrentPile().removeCard();
+                    t.putFirst(c);
+                    selectedCard = null;
+                    setStatus("No card is selected.");
+                }
+                
+                
+                
+                //MOVE MULTIPLE CARDS
+                else if (c != c.getCurrentPile().cardsInPile.get(0)) {
+                    int origRank = c.getRank();
+                    
+                    // Move cards to target pile
+                    for (int i = c.getCurrentPile().cardsInPile.size() -1; i >= 0; i--) {
+                        Card card = c.getCurrentPile().cardsInPile.get(0);
+                        if (card.getFaceStatus() && card.getRank() <= origRank) {
+                            card.getCurrentPile().removeCard();
+                            t.putFirst(card);
+                        }
+                    }
+                }
+             // Sort to correct order
+                Collections.sort(t.cardsInPile, new Comparator<Card>() {
+                    @Override
+                    public int compare(final Card card1, final Card card2) {
+                        int x = 100;
+                        if (card1.getFaceStatus() && card2.getFaceStatus()) {
+                            return Integer.compare(card1.getRank(), card2.getRank());
+                        }
+                        return x;
+                        
+                    }
+                });
+                /* OLD CODE
                 c.getCurrentPile().removeCard();
                 t.putFirst(selectedCard);
                 selectedCard.setCurrentPile(t);
                 selectedCard = null;
                 setStatus("No card is selected.");
+                */ 
+                
             }
         } catch (Exception e) {
             setStatus("An error has occured: \n" + e);
