@@ -1,3 +1,5 @@
+
+
 public class Game {
     
     //public boolean aCardIsSelected; // Used to track if a click is selecting a card or moving it
@@ -17,6 +19,29 @@ public class Game {
                             selectedCard = null;
                             System.out.println("No card is selected.");
                         }
+                        
+                        
+                        
+                        //MOVE MULTIPLE CARDS
+                        else if (c != c.getCurrentPile().cardsInPile.get(0)) {
+                            int origRank = c.getRank();
+                            
+                            // Move cards to target pile
+                            for (int i = c.getCurrentPile().cardsInPile.size() -1; i >= 0; i--) {
+                                Card card = c.getCurrentPile().cardsInPile.get(0);
+                                if (card.getFaceStatus() && card.getRank() <= origRank) {
+                                    card.getCurrentPile().removeCard();
+                                    p.putFirst(card);
+                                }
+                            }
+                            
+                            
+                            selectedCard = null;
+                            System.out.println("No card is selected");
+                        }
+                        
+                        
+                        
                     }
                     else {
                         selectedCard = null;

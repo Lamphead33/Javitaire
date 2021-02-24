@@ -227,16 +227,17 @@ public class Board
 	        if (c.getFaceStatus()) {
     	        if (game.selectedCard == null) {
     	            game.selectedCard = c;
-    	            System.out.println("A card is selected."); //printing to track if card is selected or not - for debug purposes
+    	            System.out.println("A card is selected: " + game.selectedCard.getName() + "\n"); //printing to track if card is selected or not - for debug purposes
     	        } else if (game.selectedCard != null) {
     	            game.moveCard(game.selectedCard, c.getCurrentPile());
     	            
     	            for (int i = 0; i < NUM_PLAY_DECKS; i++) {
     	                if (playCardStack[i].cardsInPile.isEmpty()) {
     	                    playCardStack[i].addMouseListener(new TableauListener(playCardStack[i]));
+    	                    playCardStack[i].repaint();
     	                }
     	            }
-    	            c.repaint();
+    	            //c.repaint();
     	            table.repaint();
     	        }
 	        }

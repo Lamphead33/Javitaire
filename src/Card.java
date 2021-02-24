@@ -68,6 +68,7 @@ class Card extends JComponent  {
 
 	// Pulls suit from enum
 	public Suit getSuit() {
+	    /*
 		switch (_suit)
 		{
 		case HEARTS:
@@ -83,11 +84,13 @@ class Card extends JComponent  {
 			System.out.println("Clubs");
 			break;
 		}
+		*/
 		return _suit;
 	}
 
 	//getting card rank from the enum
 	public Value getValue() {
+	    /*
 		switch (_value) {
 		case ACE:
 			System.out.println(" Ace");
@@ -129,6 +132,7 @@ class Card extends JComponent  {
 			System.out.println(" King");
 			break;
 		}
+		*/
 		return _value;
 	}
 
@@ -154,6 +158,10 @@ class Card extends JComponent  {
 	
 	public String getColour() {
 	    return colour;
+	}
+	
+	public String getName() {
+	    return getValue() + " of " + getSuit();
 	}
 	
 	public CardPile getCurrentPile() {
@@ -228,16 +236,16 @@ class Card extends JComponent  {
 		if (_faceup) {
 			switch (_suit) {
 			case HEARTS:
-				drawSuit(g2d, "Hearts\u2665", Color.RED);
+				drawSuit(g2d, "\u2665", Color.RED);
 				break;
 			case DIAMONDS:
-				drawSuit(g2d, "Diamonds\u2666", Color.RED);
+				drawSuit(g2d, "\u2666", Color.RED);
 				break;
 			case SPADES:
-				drawSuit(g2d, "Spades\u2660", Color.BLACK);
+				drawSuit(g2d, "\u2660", Color.BLACK);
 				break;
 			case CLUBS:
-				drawSuit(g2d, "Clubs\u2663", Color.BLACK);
+				drawSuit(g2d, "\u2663", Color.BLACK);
 				break;
 			}
 			       
