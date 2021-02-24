@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -40,13 +41,14 @@ public class Board
 	private static final JFrame frame = new JFrame("Javitaire");
 	protected static final JPanel table = new JPanel();
 	
-	//MENU COMPONENTS
+	//MENU COMPONENTS ETC
 	static JMenuBar mb;
 	static JMenu x;
 	static JMenuItem ng, vegas, rules;
 	private static JButton newGameButton = new JButton("New Game"); //Starts new game, which also shuffles deck & resets dealt cards
 	private static JButton scoreButton = new JButton("Toggle Score"); //PLACEHOLDER . . . will toggle a score off/on
 	private static Card newCardButton;// reveals waste card
+	private static JLabel statusDisplay = new JLabel("No card is selected.");
 
 	// Physically moves a card to a location within a component
 	protected static Card moveCard(Card c, int x, int y) {
@@ -159,6 +161,12 @@ public class Board
 		scoreButton.setBounds(150, TABLE_HEIGHT - 100, 200, 30); //setting button bounds
 		table.add(scoreButton); //putting button on table
 		table.repaint();
+		
+		// Game status
+		statusDisplay.setForeground(Color.DARK_GRAY);
+		statusDisplay.setBounds(450, TABLE_HEIGHT - 100, 400, 30);
+		table.add(statusDisplay);
+		table.repaint();
 	}
 	
 	
@@ -227,7 +235,10 @@ public class Board
 	        if (c.getFaceStatus()) {
     	        if (game.selectedCard == null) {
     	            game.selectedCard = c;
-    	            System.out.println("A card is selected: " + game.selectedCard.getName() + "\n"); //printing to track if card is selected or not - for debug purposes
+    	            game.setStatus("A card is selected: " + game.selectedCard.getName() + "\n"); //printing to track if card is selected or not - for debug purposes
+    	            
+    	            statusDisplay.setText(game.getStatus());
+    	        
     	        } else if (game.selectedCard != null) {
     	            game.moveCard(game.selectedCard, c.getCurrentPile());
     	            
@@ -235,9 +246,10 @@ public class Board
     	                if (playCardStack[i].cardsInPile.isEmpty()) {
     	                    playCardStack[i].addMouseListener(new TableauListener(playCardStack[i]));
     	                    playCardStack[i].repaint();
+    	                    statusDisplay.setText(game.getStatus());
     	                }
     	            }
-    	            //c.repaint();
+    	            statusDisplay.setText(game.getStatus());
     	            table.repaint();
     	        }
 	        }
@@ -245,10 +257,12 @@ public class Board
 	            if (game.selectedCard == null) {
     	            c.setFaceup();
     	            c.repaint();
+    	            statusDisplay.setText(game.getStatus());
     	            table.repaint();
 	            }
 	            else if (game.selectedCard.getValue() == Value.KING) {
 	                game.moveKing(game.selectedCard, c.getCurrentPile());
+	                statusDisplay.setText(game.getStatus());
 	                c.repaint();
 	                table.repaint();
 	            }
@@ -268,6 +282,7 @@ public class Board
 	       @Override
 	       public void mouseClicked(MouseEvent e) {   
 	           game.moveToFoundation(game.selectedCard, f);
+	           statusDisplay.setText(game.getStatus());
 	           table.repaint();
 	       }
 	}
@@ -282,6 +297,7 @@ public class Board
 	       public void mouseClicked(MouseEvent e) {
 	           if (game.selectedCard != null) {
 	               game.moveKing(game.selectedCard, t);
+	               statusDisplay.setText(game.getStatus());
 	               t.repaint();
 	               table.repaint();
 	           } 

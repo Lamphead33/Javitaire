@@ -1,6 +1,9 @@
+import java.util.Comparator;
 
 
 public class Game {
+    private String status;
+    
     
     //public boolean aCardIsSelected; // Used to track if a click is selecting a card or moving it
     public Card selectedCard; // Tracks which card is selected
@@ -17,7 +20,7 @@ public class Game {
                             c.getCurrentPile().removeCard();
                             p.putFirst(c);
                             selectedCard = null;
-                            System.out.println("No card is selected.");
+                            setStatus("No card is selected.");
                         }
                         
                         
@@ -35,9 +38,15 @@ public class Game {
                                 }
                             }
                             
+                            // Sort to correct order
+                            p.cardsInPile.sort(Comparator.comparingInt(Card::getRank));
+                                
+                            
+                            
+                            
                             
                             selectedCard = null;
-                            System.out.println("No card is selected");
+                            setStatus("No card is selected");
                         }
                         
                         
@@ -45,11 +54,11 @@ public class Game {
                     }
                     else {
                         selectedCard = null;
-                        System.out.println("Invalid move. No card is selected.");
+                        setStatus("Invalid move. No card is selected.");
                     }
                 }
             } catch (Exception e) {
-                System.out.println("An error has occured: \n" + e);
+                setStatus("An error has occured: \n" + e);
             }
         
         
@@ -64,10 +73,10 @@ public class Game {
                 }
                 else {
                     selectedCard = null;
-                    System.out.println("Invalid move. No card is selected.");
+                    setStatus("Invalid move. No card is selected.");
                 }
             } catch (Exception e) {
-                System.out.println("An error has occured: \n" + e);
+                setStatus("An error has occured: \n" + e);
             }
         }
         
@@ -81,13 +90,13 @@ public class Game {
             // c.getCurrentPile().cardsInPile.remove(0);
             c.setCurrentPile(f);
             selectedCard = null;
-            System.out.println("No card is selected");
+            setStatus("No card is selected");
             } else {
                 selectedCard = null;
-                System.out.println("Invalid move. No card is selected.");;
+                setStatus("Invalid move. No card is selected.");;
             }
         } catch (Exception e) {
-            System.out.println("An error has occured: \n" + e);
+            setStatus("An error has occured: \n" + e);
         }
     }
     
@@ -99,12 +108,21 @@ public class Game {
                 t.putFirst(selectedCard);
                 selectedCard.setCurrentPile(t);
                 selectedCard = null;
-                System.out.println("No card is selected.");
+                setStatus("No card is selected.");
             }
         } catch (Exception e) {
-            System.out.println("An error has occured: \n" + e);
+            setStatus("An error has occured: \n" + e);
         } 
     } 
+    
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
 }
 
 

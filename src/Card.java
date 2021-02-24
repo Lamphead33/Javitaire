@@ -20,6 +20,7 @@ class Card extends JComponent  {
 	private Point whereAmI; // used to create abs postion rectangle for contains
 	private CardPile currentPile;
 	private String colour;
+
 	UUID uuid;
 	private int x; // used for relative positioning within CardPile Container
 	private int y;
@@ -204,6 +205,9 @@ class Card extends JComponent  {
 		return this;
 	}
 
+	
+	
+	
 	@Override
 	public boolean contains(Point p) {
 		Rectangle rect = new Rectangle(whereAmI.x, whereAmI.y, Card.CARD_WIDTH, Card.CARD_HEIGHT);
