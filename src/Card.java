@@ -20,6 +20,7 @@ class Card extends JComponent  {
 	private Point whereAmI; // used to create abs postion rectangle for contains
 	private CardPile currentPile;
 	private String colour;
+
 	UUID uuid;
 	private int x; // used for relative positioning within CardPile Container
 	private int y;
@@ -68,6 +69,7 @@ class Card extends JComponent  {
 
 	// Pulls suit from enum
 	public Suit getSuit() {
+	    /*
 		switch (_suit)
 		{
 		case HEARTS:
@@ -83,11 +85,13 @@ class Card extends JComponent  {
 			System.out.println("Clubs");
 			break;
 		}
+		*/
 		return _suit;
 	}
 
 	//getting card rank from the enum
 	public Value getValue() {
+	    /*
 		switch (_value) {
 		case ACE:
 			System.out.println(" Ace");
@@ -129,6 +133,7 @@ class Card extends JComponent  {
 			System.out.println(" King");
 			break;
 		}
+		*/
 		return _value;
 	}
 
@@ -154,6 +159,10 @@ class Card extends JComponent  {
 	
 	public String getColour() {
 	    return colour;
+	}
+	
+	public String getName() {
+	    return getValue() + " of " + getSuit();
 	}
 	
 	public CardPile getCurrentPile() {
@@ -196,6 +205,9 @@ class Card extends JComponent  {
 		return this;
 	}
 
+	
+	
+	
 	@Override
 	public boolean contains(Point p) {
 		Rectangle rect = new Rectangle(whereAmI.x, whereAmI.y, Card.CARD_WIDTH, Card.CARD_HEIGHT);
@@ -228,16 +240,16 @@ class Card extends JComponent  {
 		if (_faceup) {
 			switch (_suit) {
 			case HEARTS:
-				drawSuit(g2d, "Hearts\u2665", Color.RED);
+				drawSuit(g2d, "\u2665", Color.RED);
 				break;
 			case DIAMONDS:
-				drawSuit(g2d, "Diamonds\u2666", Color.RED);
+				drawSuit(g2d, "\u2666", Color.RED);
 				break;
 			case SPADES:
-				drawSuit(g2d, "Spades\u2660", Color.BLACK);
+				drawSuit(g2d, "\u2660", Color.BLACK);
 				break;
 			case CLUBS:
-				drawSuit(g2d, "Clubs\u2663", Color.BLACK);
+				drawSuit(g2d, "\u2663", Color.BLACK);
 				break;
 			}
 			       
@@ -285,7 +297,7 @@ class Card extends JComponent  {
 		} else {
 		        RoundRectangle2D rect = new RoundRectangle2D.Double(_location.x, _location.y, CARD_WIDTH, CARD_HEIGHT,
                         CORNER_ANGLE, CORNER_ANGLE);
-                g2d.setColor(Color.LIGHT_GRAY);
+                g2d.setColor(new Color(160,87,168));
                 g2d.fill(rect);
                 g2d.setColor(Color.black);
                 g2d.draw(rect);

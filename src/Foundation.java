@@ -5,8 +5,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 
-import javax.swing.JButton;
-
 /*
  * Foundation 
  */
@@ -49,7 +47,7 @@ class Foundation extends CardPile {
 			Graphics2D g2d = (Graphics2D) g;
 			RoundRectangle2D rect = new RoundRectangle2D.Double(0, 0, Card.CARD_WIDTH, Card.CARD_HEIGHT,
 					Card.CORNER_ANGLE, Card.CORNER_ANGLE);
-			g2d.setColor(Color.RED); //we can change this to be an image or something? this is where the ACES stack
+			g2d.setColor(new Color(95, 168, 87)); //we can change this to be an image or something? this is where the ACES stack
 			g2d.fill(rect);
 			g2d.setColor(Color.black);
 			g2d.draw(rect);
