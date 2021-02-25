@@ -267,6 +267,7 @@ public class Board
 	                table.repaint();
 	            }
 	        }
+	        checkWin();
 	    }
 	    
 	}
@@ -283,7 +284,9 @@ public class Board
 	       public void mouseClicked(MouseEvent e) {   
 	           game.moveToFoundation(game.selectedCard, f);
 	           statusDisplay.setText(game.getStatus());
+	           checkWin();
 	           table.repaint();
+	           
 	       }
 	}
 	   
@@ -305,10 +308,30 @@ public class Board
 	               }
 	               
 	               t.repaint();
-	               table.repaint();
-	               
-	               
+	               table.repaint();  
 	           } 
+	           checkWin();
 	       }
-	   }   
+	   }
+	   
+	   private static void checkWin() {
+	       int foundationCount = 0;
+	       for (int x = 0; x < NUM_FINAL_DECKS; x++) {
+	            if (final_cards[x].cardsInPile.size() == 13) {
+	                foundationCount++;
+	            }
+	       }
+	       
+	       if (foundationCount == 4) {
+	           statusDisplay.setForeground(Color.GREEN);
+	           statusDisplay.setText("YOU WIN! Congratulations!");
+	           statusDisplay.repaint();
+	           table.repaint();
+	       }
+	       else {
+	           foundationCount = 0;
+	       }
+	   }
+	   
+	   
 }

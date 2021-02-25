@@ -27,7 +27,7 @@ public class Game {
                         
                         
                         //MOVE MULTIPLE CARDS
-                        else if (c != c.getCurrentPile().cardsInPile.get(0)) {
+                        else if (c != c.getCurrentPile().cardsInPile.get(0) && c.getCurrentPile().isTableau()) {
                             int origRank = c.getRank();
                             
                             // Move cards to target pile
@@ -51,15 +51,18 @@ public class Game {
                                     
                                 }
                             });
-                            
-                            
-                            
-                            
                             selectedCard = null;
-                            setStatus("No card is selected");
+                            setStatus("No card is selected.");
                         }
                         
                         
+                        // MOVE CARDS FROM FOUNDATION
+                        else if (c != c.getCurrentPile().cardsInPile.get(0) && c.getCurrentPile().isFoundation()) {
+                            c.getCurrentPile().removeLastCard();
+                            p.putFirst(c);
+                            selectedCard = null;
+                            setStatus("No card is selected.");
+                        }
                         
                     }
                     else {
@@ -73,13 +76,16 @@ public class Game {
         
         
         else if (p.isFoundation()) {
+            t = p.cardsInPile.get(p.cardsInPile.size() - 1);
             try {
                 if (c.getRank() == (t.getRank() + 1) && c.getSuit() == t.getSuit()) {
                     c.getCurrentPile().removeCard();
                     p.addCard(c);
                     c.setCurrentPile(p);
                     selectedCard = null;
-                    System.out.println("No card is selected.");
+                    setStatus("No card is selected.");
+                    
+
                 }
                 else {
                     selectedCard = null;
