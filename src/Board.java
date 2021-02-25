@@ -45,7 +45,7 @@ public class Board
 	static JMenuBar mb;
 	static JMenu x;
 	static JMenuItem ng, vegas, rules;
-	private static JButton newGameButton = new JButton("New Game"); //Starts new game, which also shuffles deck & resets dealt cards
+	//private static JButton newGameButton = new JButton("New Game"); //Starts new game, which also shuffles deck & resets dealt cards
 	private static JButton scoreButton = new JButton("Toggle Score"); //PLACEHOLDER . . . will toggle a score off/on
 	private static Card newCardButton;// reveals waste card
 	private static JLabel statusDisplay = new JLabel("No card is selected.");
@@ -80,6 +80,7 @@ public class Board
 		vegas = new JMenuItem("Vegas Style");
 		rules = new JMenuItem("Game Rules");
 		rules.addActionListener(new RulesListener());
+		ng.addActionListener(new NewGameListener());
 		x.add(ng); //needs action listener to start new game
 		x.add(vegas); //for the last game iteration, this switches to vegas rules
 		x.add(rules); //should generate a popup for the game rules
@@ -152,14 +153,14 @@ public class Board
 		}
 		
 		// Set up "New Game" button
-		newGameButton.addActionListener(new NewGameListener()); 
-		newGameButton.setBounds(10, TABLE_HEIGHT - 100, 120, 30); //setting button bounds
-		table.add(newGameButton); //putting button on table
+		//newGameButton.addActionListener(new NewGameListener()); 
+		//newGameButton.setBounds(10, TABLE_HEIGHT - 100, 120, 30); //setting button bounds
+		//table.add(newGameButton); //putting button on table
 		table.repaint();
 		
 		// Test button
 		scoreButton.addActionListener(new TestListener());
-		scoreButton.setBounds(150, TABLE_HEIGHT - 100, 200, 30); //setting button bounds
+		scoreButton.setBounds(10, TABLE_HEIGHT - 100, 200, 30); //setting button bounds
 		table.add(scoreButton); //putting button on table
 		table.repaint();
 		
