@@ -79,6 +79,7 @@ public class Board
 		ng = new JMenuItem("New Game");
 		vegas = new JMenuItem("Vegas Style");
 		rules = new JMenuItem("Game Rules");
+		rules.addActionListener(new RulesListener());
 		x.add(ng); //needs action listener to start new game
 		x.add(vegas); //for the last game iteration, this switches to vegas rules
 		x.add(rules); //should generate a popup for the game rules
@@ -332,6 +333,22 @@ public class Board
 	           foundationCount = 0;
 	       }
 	   }
+	   
+	   private static class RulesListener implements ActionListener {
+	       
+	       public void actionPerformed(ActionEvent event) {
+	           RulesWindow rules = new RulesWindow();
+	       }
+	       
+	       
+	       
+	       
+	   }
+	   
+	   
+	   
+	   
+	   
 	   
 	   
 }
