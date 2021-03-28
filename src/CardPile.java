@@ -151,6 +151,12 @@ class CardPile extends JComponent {
 	    }
 	}
 	
+	public void removeLastCard() {
+	    if (!this.cardsInPile.isEmpty()) {
+	        cardsInPile.remove(cardsInPile.size() - 1);
+	    }
+	}
+	
 	public Card getTopCard() {
 	    return this.cardsInPile.get(0);
 	}
