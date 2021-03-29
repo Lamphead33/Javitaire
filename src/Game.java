@@ -5,7 +5,6 @@ import java.util.Comparator;
 public class Game {
     private String status;
     
-    
     //public boolean aCardIsSelected; // Used to track if a click is selecting a card or moving it
     public Card selectedCard; // Tracks which card is selected
     
@@ -15,7 +14,7 @@ public class Game {
         // Handles move for tableaus
         if (p.isTableau())
             try {
-                {
+                	{
                     if (c.getRank() == (t.getRank() - 1) && (c.getColour() != t.getColour())  ) {
                         if (c == c.getCurrentPile().cardsInPile.get(0)) {
                             c.getCurrentPile().removeCard();

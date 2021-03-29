@@ -48,7 +48,7 @@ public class Board
 	//MENU COMPONENTS ETC
 	static JMenuBar mb;
 	static JMenu x;
-	static JMenuItem ng, vegas, rules;
+	static JMenuItem ng, vegas, rules, feedback;
 	//private static JButton newGameButton = new JButton("New Game"); //Starts new game, which also shuffles deck & resets dealt cards
 	private static JButton toggleTimerButton = new JButton("Toggle Timer"); //PLACEHOLDER . . . will toggle a score off/on
 	private static Card newCardButton;// reveals waste card
@@ -92,11 +92,14 @@ public class Board
 		ng = new JMenuItem("New Game");
 		vegas = new JMenuItem("Vegas Style");
 		rules = new JMenuItem("Game Rules");
+		feedback = new JMenuItem("Send Feedback");
 		rules.addActionListener(new RulesListener());
 		ng.addActionListener(new NewGameListener());
+		feedback.addActionListener(new FeedbackListener());
 		x.add(ng); //needs action listener to start new game
 		x.add(vegas); //for the last game iteration, this switches to vegas rules
 		x.add(rules); //should generate a popup for the game rules
+		x.add(feedback);
 		mb.add(x);
 		frame.setJMenuBar(mb);
 	}
@@ -321,6 +324,7 @@ public class Board
     	                if (playCardStack[i].cardsInPile.isEmpty()) {
     	                    playCardStack[i].addMouseListener(new TableauListener(playCardStack[i]));
     	                    playCardStack[i].repaint();
+
     	                    statusDisplay.setText(game.getStatus());
     	                }
     	            }
@@ -376,7 +380,7 @@ public class Board
 	           if (game.selectedCard != null) {
 	               game.moveKing(game.selectedCard, t);
 	               statusDisplay.setText(game.getStatus());
-
+	               
 	               
 	               for (MouseListener ml : t.getMouseListeners()) {
 	                   t.removeMouseListener(ml);
@@ -413,16 +417,13 @@ public class Board
 	       public void actionPerformed(ActionEvent event) {
 	           RulesWindow rules = new RulesWindow();
 	       }
-	       
-	       
-	       
-	       
 	   }
 	   
-	   
-	   
-	   
-	   
-	   
-	   
+	   private static class FeedbackListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				FeedbackWindow feedback = new FeedbackWindow();
+			}
+	   }
 }
