@@ -53,32 +53,4 @@ class Foundation extends CardPile {
 			g2d.draw(rect);
 		}
 	}
-	
-	
-	
-	
-	
-	/*
-	 * Not sure what this is so I'm gonna leave it just in case
-	 * 
-	  
-	  Clicker c;
-	  
-	   public class Clicker extends JButton {
-        Foundation f;
-        public Clicker(Foundation f) {
-            this.f = f;
-        }
-    }
-    
-    public void createClicker() {
-        Clicker c = new Clicker(found);
-    }
-    
-    public Clicker getClicker() {
-        return this.c;
-    }
-	 
-	 *
-	 */
 }
