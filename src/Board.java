@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 public class Board
@@ -46,9 +50,18 @@ public class Board
 	static JMenu x;
 	static JMenuItem ng, vegas, rules;
 	//private static JButton newGameButton = new JButton("New Game"); //Starts new game, which also shuffles deck & resets dealt cards
-	private static JButton scoreButton = new JButton("Toggle Score"); //PLACEHOLDER . . . will toggle a score off/on
+	private static JButton toggleTimerButton = new JButton("Toggle Timer"); //PLACEHOLDER . . . will toggle a score off/on
 	private static Card newCardButton;// reveals waste card
 	private static JLabel statusDisplay = new JLabel("No card is selected.");
+	
+	//SCORING COMPONENTS & VARIABLES
+		private static Timer timer = new Timer();
+		private static ScoreClock scoreClock = new ScoreClock();
+		private static boolean timeRunning = false;// timer running?
+		private static int score = 0;// keep track of the score
+		private static int time = 0;// keep track of seconds elapsed
+		private static JTextField scoreBox = new JTextField();// displays the score
+		private static JTextField timeBox = new JTextField();// displays the time
 
 	// Physically moves a card to a location within a component
 	protected static Card moveCard(Card c, int x, int y) {
@@ -159,10 +172,23 @@ public class Board
 		table.repaint();
 		
 		// Test button
-		scoreButton.addActionListener(new TestListener());
-		scoreButton.setBounds(10, TABLE_HEIGHT - 100, 200, 30); //setting button bounds
-		table.add(scoreButton); //putting button on table
+		toggleTimerButton.addActionListener(new ToggleTimerListener());
+		toggleTimerButton.setBounds(10, TABLE_HEIGHT - 100, 120, 30); //setting button bounds
+		table.add(toggleTimerButton); //putting button on table
+		table.add(scoreBox);
+		table.add(timeBox);
 		table.repaint();
+		
+		//RESET TIMES AND SCORES
+		scoreBox.setBounds(140, TABLE_HEIGHT - 100, 120, 30);
+		scoreBox.setText("Score: 0");
+		scoreBox.setEditable(false);
+		scoreBox.setOpaque(true);
+
+		timeBox.setBounds(270, TABLE_HEIGHT - 100, 120, 30); //lol
+		timeBox.setText("Seconds: 0");
+		timeBox.setEditable(false);
+		timeBox.setOpaque(true);
 		
 		// Game status
 		statusDisplay.setForeground(Color.DARK_GRAY);
@@ -171,8 +197,52 @@ public class Board
 		table.repaint();
 	}
 	
-	
-	
+	//TIMER AND SCORE RELATED METHODS
+		// add/subtract points based on gameplay actions
+			protected static void setScore(int deltaScore) {
+				Board.score += deltaScore;
+				String newScore = "Score: " + Board.score;
+				scoreBox.setText(newScore);
+				scoreBox.repaint();
+			}
+
+			// GAME TIMER UTILITIES
+			protected static void updateTimer() {
+				Board.time += 1;
+				// every 10 seconds elapsed we take away 2 points
+				if (Board.time % 10 == 0)
+				{
+					setScore(-2);
+				}
+				String time = "Seconds: " + Board.time;
+				timeBox.setText(time);
+				timeBox.repaint();
+			}
+
+			protected static void startTimer() {
+				scoreClock = new ScoreClock();
+				// set the timer to update every second
+				timer.scheduleAtFixedRate(scoreClock, 1000, 1000);
+				timeRunning = true;
+			}
+
+			// the pause timer button uses this
+			protected static void toggleTimer()
+			{
+				if (timeRunning && scoreClock != null) {
+					scoreClock.cancel();
+					timeRunning = false;
+				} else {
+					startTimer();
+				}
+			}
+
+			private static class ScoreClock extends TimerTask {
+				@Override
+				public void run() {
+					updateTimer();
+				}
+			}
 	
 	/*
 	 * The following listeners handle mouse interaction and general card/button behaviour
@@ -184,12 +254,15 @@ public class Board
 		}
 	}
 	
-	private static class TestListener implements ActionListener {
+	private static class ToggleTimerListener implements ActionListener {
 	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	        Card c = deck.pop().setFaceup();
-	        playCardStack[6].putFirst(c); 
-	        table.repaint();
+	    public void actionPerformed(ActionEvent e) {			
+	    	toggleTimer();
+	    	if (!timeRunning) {
+	    		toggleTimerButton.setText("Start Timer");
+	    	} else {
+	    		toggleTimerButton.setText("Pause Timer");
+	    	}
 	    }
 	}
 	
