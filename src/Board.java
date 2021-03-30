@@ -330,7 +330,7 @@ public class Board {
                 }
             }
 
-            if (c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0 && c.getValue() == Value.ACE
+            else if (c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0 && c.getValue() == Value.ACE
                     && !c.getCurrentPile().isDeck()) {
                 for (int i = 0; i < 4; i++) {
                     if (final_cards[i].cardsInPile.isEmpty()) {
@@ -338,6 +338,19 @@ public class Board {
                         final_cards[i].addCard(c);
 
                     }
+                }
+            }
+            else if (c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0) {
+                // Iterate through foundations to automate click filling 
+                for (int i = 0; i < final_cards.length; i++) {
+                    CardPile p = final_cards[i];
+                    
+                    if (!p.cardsInPile.isEmpty()) {
+                        game.moveCard(c, p);
+                        
+                        
+                    }
+
                 }
             }
         }
