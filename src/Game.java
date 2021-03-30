@@ -8,7 +8,7 @@ public class Game {
     //public boolean aCardIsSelected; // Used to track if a click is selecting a card or moving it
     public Card selectedCard; // Tracks which card is selected
     
-    public void moveCard(Card c, CardPile p) {
+    public boolean moveCard(Card c, CardPile p) {
         Card t = p.cardsInPile.get(0);
 
         // Handles move for tableaus
@@ -21,6 +21,7 @@ public class Game {
                         p.putFirst(c);
                         selectedCard = null;
                         setStatus("No card is selected");
+                        return true;
                     }
                 
                 
@@ -30,6 +31,7 @@ public class Game {
                             p.putFirst(c);
                             selectedCard = null;
                             setStatus("No card is selected.");
+                            return true;
                         }
                         
                         
@@ -45,6 +47,7 @@ public class Game {
                                     card.getCurrentPile().removeCard();
                                     p.putFirst(card);
                                 }
+                                
                             }
                             
                             // Sort to correct order
@@ -61,6 +64,7 @@ public class Game {
                             });
                             selectedCard = null;
                             setStatus("No card is selected.");
+                            return true;
                         }
                         
                         
@@ -70,12 +74,14 @@ public class Game {
                             p.putFirst(c);
                             selectedCard = null;
                             setStatus("No card is selected.");
+                            return true;
                         }
                         
                     }
                     else {
                         selectedCard = null;
                         setStatus("Invalid move. No card is selected.");
+                        return false;
                     }
             } catch (Exception e) {
                 setStatus("An error has occured: \n" + e);
@@ -91,17 +97,21 @@ public class Game {
                     c.setCurrentPile(p);
                     selectedCard = null;
                     setStatus("No card is selected.");
+                    return true;
                     
 
                 }
                 else {
                     selectedCard = null;
                     setStatus("Invalid move. No card is selected.");
+                    return false;
                 }
             } catch (Exception e) {
                 setStatus("An error has occured: \n" + e);
             }
+            return false;
         }
+        return false;
         
     }
     

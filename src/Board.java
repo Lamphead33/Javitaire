@@ -215,7 +215,7 @@ public class Board {
 
     // TIMER AND SCORE RELATED METHODS
     // add/subtract points based on gameplay actions
-    protected static void setScore(int deltaScore) {
+    public static void setScore(int deltaScore) {
         Board.score += deltaScore;
         String newScore = "Score: " + Board.score;
         scoreBox.setText(newScore);
@@ -330,7 +330,7 @@ public class Board {
                 }
             }
 
-            if (c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0 && c.getValue() == Value.ACE
+            else if (c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0 && c.getValue() == Value.ACE
                     && !c.getCurrentPile().isDeck()) {
                 for (int i = 0; i < 4; i++) {
                     if (final_cards[i].cardsInPile.isEmpty()) {
@@ -338,6 +338,19 @@ public class Board {
                         final_cards[i].addCard(c);
 
                     }
+                }
+            }
+            else if (c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0) {
+                // Iterate through foundations to automate click filling 
+                for (int i = 0; i < final_cards.length; i++) {
+                    CardPile p = final_cards[i];
+                    
+                    if (!p.cardsInPile.isEmpty()) {
+                        game.moveCard(c, p);
+                        
+                        
+                    }
+
                 }
             }
         }
@@ -363,7 +376,9 @@ public class Board {
             table.setCursor(Cursor.getDefaultCursor());
 
             if (game.selectedCard != null && hoveredCard != null && hoveredTableau == null) {
-                game.moveCard(game.selectedCard, hoveredCard.getCurrentPile());
+                if (game.moveCard(game.selectedCard, hoveredCard.getCurrentPile())) {
+                    setScore(5);
+                }
             }
             
             else if (game.selectedCard != null && hoveredTableau!= null && game.selectedCard.getRank() == 12) {
@@ -524,4 +539,11 @@ public class Board {
             FeedbackWindow feedback = new FeedbackWindow();
         }
     }
+    
+
+    
+    
+
+    
+    
 }
