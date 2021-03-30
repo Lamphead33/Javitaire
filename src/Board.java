@@ -363,7 +363,9 @@ public class Board {
             table.setCursor(Cursor.getDefaultCursor());
 
             if (game.selectedCard != null && hoveredCard != null && hoveredTableau == null) {
-                game.moveCard(game.selectedCard, hoveredCard.getCurrentPile());
+                if (game.moveCard(game.selectedCard, hoveredCard.getCurrentPile())) {
+                    setScore(5);
+                }
             }
             
             else if (game.selectedCard != null && hoveredTableau!= null && game.selectedCard.getRank() == 12) {
