@@ -14,7 +14,16 @@ public class Game {
         // Handles move for tableaus
         if (p.isTableau())
             try {
-                	{
+                
+                 // KINGS
+                    if (c.getRank() == 12 && !t.getFaceStatus()) {
+                        c.getCurrentPile().removeCard();
+                        p.putFirst(c);
+                        selectedCard = null;
+                        setStatus("No card is selected");
+                    }
+                
+                
                     if (c.getRank() == (t.getRank() - 1) && (c.getColour() != t.getColour())  ) {
                         if (c == c.getCurrentPile().cardsInPile.get(0)) {
                             c.getCurrentPile().removeCard();
@@ -68,7 +77,6 @@ public class Game {
                         selectedCard = null;
                         setStatus("Invalid move. No card is selected.");
                     }
-                }
             } catch (Exception e) {
                 setStatus("An error has occured: \n" + e);
             }
