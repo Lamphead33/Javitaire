@@ -215,7 +215,7 @@ public class Board {
 
     // TIMER AND SCORE RELATED METHODS
     // add/subtract points based on gameplay actions
-    protected static void setScore(int deltaScore) {
+    public static void setScore(int deltaScore) {
         Board.score += deltaScore;
         String newScore = "Score: " + Board.score;
         scoreBox.setText(newScore);
@@ -524,4 +524,11 @@ public class Board {
             FeedbackWindow feedback = new FeedbackWindow();
         }
     }
+    
+
+    
+    
+
+    
+    
 }
