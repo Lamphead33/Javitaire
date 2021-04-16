@@ -172,6 +172,7 @@ public class Game {
                         
                     }
                     
+                    
                 });
                 selectedCard = null;
                 setStatus("No card is selected.");
