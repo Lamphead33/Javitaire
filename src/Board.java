@@ -74,6 +74,7 @@ public class Board {
     protected static Cursor draggingCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     static Card hoveredCard;
     static CardPile hoveredTableau;
+    static CardPile hoveredFoundation;
 
     // Physically moves a card to a location within a component
     protected static Card moveCard(Card c, int x, int y) {
@@ -462,13 +463,32 @@ public class Board {
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-            game.moveToFoundation(game.selectedCard, f);
+        public void mouseReleased(MouseEvent e) {
+            
+            game.moveToFoundation(game.selectedCard, hoveredFoundation);
             statusDisplay.setText(game.getStatus());
             checkWin();
             table.repaint();
+            
+            /*
+            if (game.moveCard(game.selectedCard, hoveredFoundation)) {
+                setScore(5);
+            }
+            */
 
         }
+        
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            hoveredFoundation = (CardPile) e.getComponent();
+        }
+        
+        @Override 
+        public void mouseExited(MouseEvent e) {
+            hoveredFoundation = null;
+        }
+        
+        
     }
 
     // Mostly used for handling King behaviour
