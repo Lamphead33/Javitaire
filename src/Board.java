@@ -325,6 +325,7 @@ public class Board {
             if (!c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0) {
                 if (game.selectedCard == null) {
                     c.setFaceup();
+                    setScore(5);
                     c.repaint();
                     statusDisplay.setText(game.getStatus());
                     table.repaint();
@@ -465,10 +466,11 @@ public class Board {
         @Override
         public void mouseReleased(MouseEvent e) {
             
-            game.moveToFoundation(game.selectedCard, hoveredFoundation);
-            statusDisplay.setText(game.getStatus());
-            checkWin();
-            table.repaint();
+            if (game.selectedCard.getFaceStatus() && game.selectedCard.getCurrentPile().cardsInPile.indexOf(game.selectedCard) == 0 && game.selectedCard.getValue() == Value.ACE
+                    && !game.selectedCard.getCurrentPile().isDeck()) {
+                    game.selectedCard.getCurrentPile().removeCard();
+                    f.addCard(game.selectedCard);
+            }
             
             /*
             if (game.moveCard(game.selectedCard, hoveredFoundation)) {
