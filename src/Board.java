@@ -49,6 +49,7 @@ public class Board {
     private static Game game;
     private static CardPile waste; // waste Pile
     private static MouseListener wasteListener;
+    private static boolean isVegas = false;
 
     // GUI COMPONENTS (top level)
     private static final JFrame frame = new JFrame("Javitaire");
@@ -110,7 +111,7 @@ public class Board {
         contentPane.add(table);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createTopMenu();
-        playNewGame();
+        playNewGame(false);
         frame.setVisible(true);
     }
 
@@ -135,7 +136,7 @@ public class Board {
     }
 
     // New Game handler
-    private static void playNewGame() {
+    private static void playNewGame(boolean vegasScoring) {
         game = new Game();
         deck = new CardPile(true); // deal 52 cards
         deck.shuffle();
@@ -144,6 +145,9 @@ public class Board {
         waste = new CardPile(false); // sets an empty CardPile where waste will go
         waste.setWaste();
         wasteListener = new WasteListener();
+        if (vegasScoring == true) {
+            isVegas = true;
+        }
 
         // Initializes location as 'deck' for each card
         for (Card c : deck.cardsInPile) {
@@ -283,7 +287,7 @@ public class Board {
     private static class NewGameListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            playNewGame();
+            playNewGame(false);
         }
     }
 
