@@ -2,8 +2,12 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -48,8 +52,21 @@ public class Board {
 
     // GUI COMPONENTS (top level)
     private static final JFrame frame = new JFrame("Javitaire");
-    protected static final JPanel table = new JPanel();
+    protected static final JPanel table = new JPanel() {
+        @Override
+        protected void paintComponent(Graphics grphcs) {
+            super.paintComponent(grphcs);
+            Graphics2D g2d = (Graphics2D) grphcs;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            GradientPaint gp = new GradientPaint(500, 0,
+                    getBackground().brighter().brighter(), 0, getHeight(),
+                    getBackground().darker().darker());
+            g2d.setPaint(gp);
+            g2d.fillRect(0, 0, getWidth(), getHeight()); 
 
+        }
+    };
     // MENU COMPONENTS ETC
     static JMenuBar mb;
     static JMenu x;
