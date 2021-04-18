@@ -7,7 +7,7 @@ public class Game {
     
     //public boolean aCardIsSelected; // Used to track if a click is selecting a card or moving it
     public Card selectedCard; // Tracks which card is selected
-    
+
     public boolean moveCard(Card c, CardPile p) {
         Card t = p.cardsInPile.get(0);
 
@@ -98,8 +98,14 @@ public class Game {
                     selectedCard = null;
                     setStatus("No card is selected.");
                     return true;
-                    
-
+                }
+                else if (c.getRank() == 0 && p.cardsInPile.isEmpty()) {
+                    c.getCurrentPile().removeCard();
+                    p.addCard(c);
+                    c.setCurrentPile(p);
+                    selectedCard = null;
+                    setStatus("No card is selected");
+                    return true;
                 }
                 else {
                     selectedCard = null;
@@ -115,7 +121,7 @@ public class Game {
         
     }
     
-    public void moveToFoundation(Card c, Foundation f) {
+    public void moveToFoundation(Card c, CardPile f) {
         try {
             if (f.cardsInPile.isEmpty() && selectedCard != null && c.getRank() == 0) {
             c.getCurrentPile().removeCard();
@@ -172,6 +178,7 @@ public class Game {
                         
                     }
                     
+                    
                 });
                 selectedCard = null;
                 setStatus("No card is selected.");
@@ -190,6 +197,8 @@ public class Game {
         } 
     } 
     
+    
+
     
     public void setStatus(String status) {
         this.status = status;

@@ -2,8 +2,12 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -45,11 +49,25 @@ public class Board {
     private static Game game;
     private static CardPile waste; // waste Pile
     private static MouseListener wasteListener;
+    private static boolean isVegas = false;
 
     // GUI COMPONENTS (top level)
     private static final JFrame frame = new JFrame("Javitaire");
-    protected static final JPanel table = new JPanel();
+    protected static final JPanel table = new JPanel() {
+        @Override
+        protected void paintComponent(Graphics grphcs) {
+            super.paintComponent(grphcs);
+            Graphics2D g2d = (Graphics2D) grphcs;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            GradientPaint gp = new GradientPaint(500, 0,
+                    getBackground().brighter().brighter(), 0, getHeight(),
+                    getBackground().darker().darker());
+            g2d.setPaint(gp);
+            g2d.fillRect(0, 0, getWidth(), getHeight()); 
 
+        }
+    };
     // MENU COMPONENTS ETC
     static JMenuBar mb;
     static JMenu x;
@@ -74,6 +92,7 @@ public class Board {
     protected static Cursor draggingCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     static Card hoveredCard;
     static CardPile hoveredTableau;
+    static CardPile hoveredFoundation;
 
     // Physically moves a card to a location within a component
     protected static Card moveCard(Card c, int x, int y) {
@@ -92,7 +111,7 @@ public class Board {
         contentPane.add(table);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createTopMenu();
-        playNewGame();
+        playNewGame(false);
         frame.setVisible(true);
     }
 
@@ -117,7 +136,7 @@ public class Board {
     }
 
     // New Game handler
-    private static void playNewGame() {
+    private static void playNewGame(boolean vegasScoring) {
         game = new Game();
         deck = new CardPile(true); // deal 52 cards
         deck.shuffle();
@@ -126,6 +145,9 @@ public class Board {
         waste = new CardPile(false); // sets an empty CardPile where waste will go
         waste.setWaste();
         wasteListener = new WasteListener();
+        if (vegasScoring == true) {
+            isVegas = true;
+        }
 
         // Initializes location as 'deck' for each card
         for (Card c : deck.cardsInPile) {
@@ -265,7 +287,7 @@ public class Board {
     private static class NewGameListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            playNewGame();
+            playNewGame(false);
         }
     }
 
@@ -324,6 +346,7 @@ public class Board {
             if (!c.getFaceStatus() && c.getCurrentPile().cardsInPile.indexOf(c) == 0) {
                 if (game.selectedCard == null) {
                     c.setFaceup();
+                    setScore(5);
                     c.repaint();
                     statusDisplay.setText(game.getStatus());
                     table.repaint();
@@ -462,13 +485,33 @@ public class Board {
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-            game.moveToFoundation(game.selectedCard, f);
-            statusDisplay.setText(game.getStatus());
-            checkWin();
-            table.repaint();
+        public void mouseReleased(MouseEvent e) {
+            
+            if (game.selectedCard.getFaceStatus() && game.selectedCard.getCurrentPile().cardsInPile.indexOf(game.selectedCard) == 0 && game.selectedCard.getValue() == Value.ACE
+                    && !game.selectedCard.getCurrentPile().isDeck()) {
+                    game.selectedCard.getCurrentPile().removeCard();
+                    f.addCard(game.selectedCard);
+            }
+            
+            /*
+            if (game.moveCard(game.selectedCard, hoveredFoundation)) {
+                setScore(5);
+            }
+            */
 
         }
+        
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            hoveredFoundation = (CardPile) e.getComponent();
+        }
+        
+        @Override 
+        public void mouseExited(MouseEvent e) {
+            hoveredFoundation = null;
+        }
+        
+        
     }
 
     // Mostly used for handling King behaviour

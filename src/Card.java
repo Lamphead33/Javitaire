@@ -4,7 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 
@@ -219,6 +224,7 @@ class Card extends JComponent  {
 		g.drawString(suit, _location.x + x_offset, _location.y + y_offset);
 		g.drawString(suit, _location.x + x_offset, _location.y + CARD_HEIGHT - 5);
 	}
+
 
 	private void drawValue(Graphics2D g, String value) {
 		g.drawString(value, _location.x + new_x_offset, _location.y + y_offset);
